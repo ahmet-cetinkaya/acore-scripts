@@ -1,0 +1,6 @@
+{
+  "version": "0.2",
+  "language": "en,en-US",
+  "words": ["acore"],
+  "ignorePaths": ["node_modules/**", ".git/**", "dist/**", "build/**"]
+}
