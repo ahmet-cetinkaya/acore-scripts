@@ -48,7 +48,7 @@ _print_with_formatting() {
     reset_code=$COLOR_NC
   fi
 
-  echo -e "${timestamp}${color_code}${prefix}${reset_code} $message"
+  printf "${timestamp}${color_code}${prefix}${reset_code} $message\n"
 }
 
 # Logging functions
@@ -86,50 +86,50 @@ acore_log_critical() {
 
 # Utility functions
 acore_log_header() {
-  echo
+  printf "\n"
   if [[ "$LOG_COLOR" == "true" ]]; then
-    echo "${COLOR_CYAN}==================================================================${COLOR_NC}"
-    echo "$1"
-    echo "${COLOR_CYAN}==================================================================${COLOR_NC}"
+    printf "${COLOR_CYAN}==================================================================${COLOR_NC}\n"
+    printf "$1\n"
+    printf "${COLOR_CYAN}==================================================================${COLOR_NC}\n"
   else
-    echo "=================================================================="
-    echo "$1"
-    echo "=================================================================="
+    printf "==================================================================\n"
+    printf "$1\n"
+    printf "==================================================================\n"
   fi
-  echo
+  printf "\n"
 }
 
 acore_log_section() {
-  echo
+  printf "\n"
   if [[ "$LOG_COLOR" == "true" ]]; then
-    echo "${COLOR_PURPLE}--- $1 ---${COLOR_NC}"
+    printf "${COLOR_PURPLE}--- $1 ---${COLOR_NC}\n"
   else
-    echo "--- $1 ---"
+    printf "--- $1 ---\n"
   fi
-  echo
+  printf "\n"
 }
 
 acore_log_divider() {
-  echo
-  echo "$(printf '=%.0s' 50)"
-  echo
+  printf "\n"
+  printf "$(printf '=%.0s' 50)\n"
+  printf "\n"
 }
 
 # Special formatting functions
 acore_log_bold() {
   if [[ "$LOG_COLOR" == "true" ]]; then
-    echo "${COLOR_WHITE}$*${COLOR_NC}"
+    printf "${COLOR_WHITE}$*${COLOR_NC}\n"
   else
-    echo "$*"
+    printf "$*\n"
   fi
 }
 
 acore_log_italic() {
   # Note: Italic may not work in all terminals
   if [[ "$LOG_COLOR" == "true" ]]; then
-    echo "${COLOR_PURPLE}$*${COLOR_NC}"
+    printf "${COLOR_PURPLE}$*${COLOR_NC}\n"
   else
-    echo "$*"
+    printf "$*\n"
   fi
 }
 
@@ -141,7 +141,7 @@ acore_log_to_file() {
   local message="$*"
 
   mkdir -p "$(dirname "$file_path")"
-  echo "$(get_timestamp) [$level] $message" >>"$file_path"
+  echo "$(get_timestamp) [$level] $message" >> "$file_path"
 }
 
 # Error handling with logging
@@ -158,7 +158,7 @@ acore_log_spinner() {
   local delay=0.1
   local spinstr='|/-\'
 
-  while kill -0 "$pid" 2>/dev/null; do
+  while kill -0 "$pid" 2> /dev/null; do
     local temp=${spinstr#?}
     printf "\r${temp}" >&2
     spinstr=$temp${spinstr%"$temp"}
