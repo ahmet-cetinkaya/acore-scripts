@@ -4,7 +4,6 @@
 
 A collection of reusable bash scripts to eliminate code duplication across projects. These scripts provide common utilities for logging, changelog generation, version management, and more.
 
-
 ## ⚡ Getting Started
 
 ### 📋 Requirements
@@ -15,6 +14,7 @@ A collection of reusable bash scripts to eliminate code duplication across proje
 ### 🛠️ Installation
 
 #### Method 1: Git Submodule (Recommended)
+
 ```bash
 cd your-project
 git submodule add https://github.com/ahmet-cetinkaya/acore-scripts.git scripts/acore
@@ -22,12 +22,14 @@ git submodule update --init --recursive
 ```
 
 #### Method 2: Clone Directly
+
 ```bash
 git clone https://github.com/ahmet-cetinkaya/acore-scripts.git
 cd acore-scripts
 ```
 
 #### Method 3: Copy Scripts
+
 ```bash
 # Copy specific scripts to your project
 cp acore-scripts/src/logger.sh your-project/scripts/
