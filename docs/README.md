@@ -52,7 +52,9 @@ Welcome to the acore-scripts documentation hub. This comprehensive documentation
 #### **Core Features**
 
 - [Logger API Reference](API_REFERENCE.md#logger-utilities-loggersh)
+- [Format Utilities](API_REFERENCE.md#format-utilities)
 - [Logging Patterns](KNOWLEDGE_BASE.md#logging-patterns)
+- [Formatting Patterns](KNOWLEDGE_BASE.md#formatting-patterns)
 - [Configuration Options](API_REFERENCE.md#configuration)
 
 #### **Implementation**
@@ -91,10 +93,12 @@ Welcome to the acore-scripts documentation hub. This comprehensive documentation
 🔥 **Most Frequently Accessed:**
 
 1. [Logger API Functions](API_REFERENCE.md#logging-functions)
-2. [Integration Examples](KNOWLEDGE_BASE.md#integration-patterns)
-3. [Error Handling](KNOWLEDGE_BASE.md#error-handling-patterns)
-4. [Configuration](API_REFERENCE.md#configuration)
-5. [Deployment Scripts](KNOWLEDGE_BASE.md#deployment-scripts)
+2. [Format Utilities](API_REFERENCE.md#format-utilities)
+3. [Integration Examples](KNOWLEDGE_BASE.md#integration-patterns)
+4. [Formatting Patterns](KNOWLEDGE_BASE.md#formatting-patterns)
+5. [Error Handling](KNOWLEDGE_BASE.md#error-handling-patterns)
+6. [Configuration](API_REFERENCE.md#configuration)
+7. [Deployment Scripts](KNOWLEDGE_BASE.md#deployment-scripts)
 
 ## 📋 Documentation Structure
 
@@ -170,10 +174,10 @@ Documentation is extensively cross-referenced:
 ## 📊 Documentation Metrics
 
 - **Total Documents**: 5 comprehensive guides
-- **API Functions Documented**: 20+ logger functions
-- **Usage Examples**: 30+ practical examples
-- **Integration Patterns**: 10+ proven patterns
-- **Cross-References**: 100+ internal links
+- **API Functions Documented**: 40+ functions (logger + format utilities)
+- **Usage Examples**: 50+ practical examples
+- **Integration Patterns**: 15+ proven patterns
+- **Cross-References**: 150+ internal links
 
 ## 🔄 Recent Updates
 

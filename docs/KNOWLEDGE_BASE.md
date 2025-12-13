@@ -10,6 +10,7 @@ A comprehensive collection of usage patterns, best practices, and solutions for 
   - [First Script Integration](#first-script-integration)
 - [Usage Patterns](#usage-patterns)
   - [Logging Patterns](#logging-patterns)
+  - [Formatting Patterns](#formatting-patterns)
   - [Error Handling Patterns](#error-handling-patterns)
   - [Configuration Patterns](#configuration-patterns)
   - [Integration Patterns](#integration-patterns)
@@ -203,6 +204,371 @@ process_file() {
 
 # Usage
 process_file "data.txt"
+```
+
+### Formatting Patterns
+
+#### Universal Code Formatting
+
+Format all supported file types in a project:
+
+```bash
+#!/bin/bash
+# format-all.sh - Universal code formatter
+
+# Source all format utilities
+source "$(dirname "$0")/acore/src/format_json.sh"
+source "$(dirname "$0")/acore/src/format_yaml.sh"
+source "$(dirname "$0")/acore/src/format_md.sh"
+source "$(dirname "$0")/acore/src/format_sh.sh"
+
+format_all_files() {
+  acore_log_header "Universal Code Formatting"
+
+  # Format JSON files
+  acore_log_section "JSON Files"
+  acore_format_json_files
+
+  # Format YAML files
+  acore_log_section "YAML Files"
+  acore_format_yaml_files
+
+  # Format Markdown files
+  acore_log_section "Markdown Files"
+  acore_format_md_files
+
+  # Format Shell scripts
+  acore_log_section "Shell Scripts"
+  acore_sh_format_all
+
+  acore_log_success "All files formatted"
+}
+
+# Usage
+format_all_files
+```
+
+#### Pre-commit Formatting Hook
+
+```bash
+#!/bin/bash
+# .git/hooks/pre-commit
+
+# Source format utilities
+SCRIPT_DIR="$(git rev-parse --show-toplevel)/scripts/acore/src"
+source "$SCRIPT_DIR/format_json.sh"
+source "$SCRIPT_DIR/format_yaml.sh"
+source "$SCRIPT_DIR/format_md.sh"
+source "$SCRIPT_DIR/format_sh.sh"
+
+# Check only mode
+export CHECK_ONLY=true
+
+pre_commit_format_check() {
+  acore_log_header "Pre-commit Format Check"
+
+  local exit_code=0
+
+  # Check JSON files
+  if ! acore_format_json_files; then
+    acore_log_warning "JSON files need formatting"
+    exit_code=1
+  fi
+
+  # Check YAML files
+  if ! acore_format_yaml_files; then
+    acore_log_warning "YAML files need formatting"
+    exit_code=1
+  fi
+
+  # Check Markdown files
+  if ! acore_format_md_files; then
+    acore_log_warning "Markdown files need formatting"
+    exit_code=1
+  fi
+
+  # Check Shell scripts
+  if ! acore_sh_format_all; then
+    acore_log_warning "Shell scripts need formatting"
+    exit_code=1
+  fi
+
+  if [[ $exit_code -eq 0 ]]; then
+    acore_log_success "All files properly formatted"
+  else
+    acore_log_error "Files need formatting. Run 'make format' before committing."
+  fi
+
+  exit $exit_code
+}
+
+pre_commit_format_check
+```
+
+#### Custom Formatting Configuration
+
+```bash
+#!/bin/bash
+# Custom formatting with project-specific rules
+
+source "$(dirname "$0")/acore/src/format_sh.sh"
+
+# Custom shell script formatting preferences
+format_shell_scripts_custom() {
+  acore_log_header "Custom Shell Script Formatting"
+
+  # Project-specific configuration
+  export INDENT_SIZE=4          # Use 4 spaces instead of 2
+  export BINARY_NEXT_LINE=false # Keep binary operators on same line
+  export KEEP_PADDING=true       # Preserve alignment
+  export VERBOSE=true            # Show detailed output
+
+  # Format only specific directories
+  export TARGET_DIR="./scripts"
+  export RECURSIVE=true
+
+  acore_log_info "Custom configuration:"
+  acore_log_info "  Indentation: $INDENT_SIZE spaces"
+  acore_log_info "  Binary operators: $BINARY_NEXT_LINE"
+  acore_log_info "  Keep padding: $KEEP_PADDING"
+  acore_log_info "  Target directory: $TARGET_DIR"
+
+  acore_sh_format_all
+}
+
+# Usage
+format_shell_scripts_custom
+```
+
+#### CI/CD Formatting Validation
+
+```bash
+#!/bin/bash
+# CI formatting validation pipeline
+
+validate_formatting() {
+  acore_log_header "CI Format Validation"
+
+  # Set check mode
+  export CHECK_ONLY=true
+  export VERBOSE=true
+
+  local failed=0
+
+  # Validate JSON with Prettier
+  acore_log_section "JSON Validation"
+  if command -v prettier &> /dev/null; then
+    if ! prettier --check "**/*.json" &> /dev/null; then
+      acore_log_error "JSON files are not properly formatted"
+      failed=1
+    else
+      acore_log_success "JSON files properly formatted"
+    fi
+  else
+    acore_log_warning "Prettier not available - skipping JSON validation"
+  fi
+
+  # Validate YAML with Prettier
+  acore_log_section "YAML Validation"
+  if command -v prettier &> /dev/null; then
+    if ! prettier --check "**/*.{yml,yaml}" &> /dev/null; then
+      acore_log_error "YAML files are not properly formatted"
+      failed=1
+    else
+      acore_log_success "YAML files properly formatted"
+    fi
+  else
+    acore_log_warning "Prettier not available - skipping YAML validation"
+  fi
+
+  # Validate Shell scripts with shfmt
+  acore_log_section "Shell Script Validation"
+  if command -v shfmt &> /dev/null; then
+    if ! shfmt -d . &> /dev/null; then
+      acore_log_error "Shell scripts are not properly formatted"
+      failed=1
+    else
+      acore_log_success "Shell scripts properly formatted"
+    fi
+  else
+    acore_log_warning "shfmt not available - skipping shell script validation"
+  fi
+
+  if [[ $failed -eq 0 ]]; then
+    acore_log_success "All formatting validation passed"
+    return 0
+  else
+    acore_log_error "Formatting validation failed"
+    return 1
+  fi
+}
+
+# Usage in CI
+if ! validate_formatting; then
+  exit 1
+fi
+```
+
+#### Selective Formatting
+
+```bash
+#!/bin/bash
+# Format only modified or specific files
+
+source "$(dirname "$0")/acore/src/format_sh.sh"
+
+format_changed_files() {
+  acore_log_header "Formatting Changed Files"
+
+  # Get files changed in git
+  local changed_files
+  mapfile -t changed_files < <(git diff --cached --name-only --diff-filter=ACM)
+
+  local formatted_count=0
+
+  for file in "${changed_files[@]}"; do
+    case "$file" in
+      *.json)
+        acore_log_info "Formatting JSON: $file"
+        prettier --write "$file"
+        ((formatted_count++))
+        ;;
+      *.yml|*.yaml)
+        acore_log_info "Formatting YAML: $file"
+        prettier --write "$file"
+        ((formatted_count++))
+        ;;
+      *.md)
+        acore_log_info "Formatting Markdown: $file"
+        prettier --write "$file"
+        ((formatted_count++))
+        ;;
+      *.sh)
+        acore_log_info "Formatting Shell: $file"
+        acore_sh_format_file "$file"
+        ((formatted_count++))
+        ;;
+    esac
+  done
+
+  acore_log_success "Formatted $formatted_count files"
+}
+
+# Format specific file types in directory
+format_directory() {
+  local target_dir="$1"
+
+  acore_log_header "Formatting Directory: $target_dir"
+
+  # Format shell scripts in specific directory
+  export TARGET_DIR="$target_dir"
+  export RECURSIVE=true
+
+  acore_sh_format_all
+}
+
+# Usage examples
+format_changed_files  # Format only git staged files
+format_directory "./scripts"  # Format all files in scripts directory
+```
+
+#### Development Environment Formatting
+
+```bash
+#!/bin/bash
+# Development setup with formatting tools
+
+setup_development_environment() {
+  acore_log_header "Setting Up Development Environment"
+
+  # Check for required formatting tools
+  local missing_tools=()
+
+  # Check Prettier
+  if ! command -v prettier &> /dev/null; then
+    acore_log_warning "Prettier not found"
+    acore_log_info "Installing Prettier..."
+    npm install -g prettier
+    if [[ $? -ne 0 ]]; then
+      missing_tools+=("prettier")
+    fi
+  else
+    acore_log_success "Prettier is available"
+  fi
+
+  # Check shfmt
+  if ! command -v shfmt &> /dev/null; then
+    acore_log_warning "shfmt not found"
+    acore_log_info "Installing shfmt..."
+    go install mvdan.cc/sh/v3/cmd/shfmt@latest
+    if [[ $? -ne 0 ]]; then
+      missing_tools+=("shfmt")
+    fi
+  else
+    acore_log_success "shfmt is available"
+  fi
+
+  # Report missing tools
+  if [[ ${#missing_tools[@]} -gt 0 ]]; then
+    acore_log_warning "Some tools could not be installed: ${missing_tools[*]}"
+    acore_log_info "Please install them manually:"
+    for tool in "${missing_tools[@]}"; do
+      case $tool in
+        "prettier")
+          acore_log_info "  npm: npm install -g prettier"
+          ;;
+        "shfmt")
+          acore_log_info "  go: go install mvdan.cc/sh/v3/cmd/shfmt@latest"
+          ;;
+      esac
+    done
+  fi
+
+  # Create format configuration files
+  acore_log_section "Creating Configuration Files"
+
+  # .prettierrc
+  if [[ ! -f .prettierrc ]]; then
+    cat > .prettierrc << 'EOF'
+{
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 100
+}
+EOF
+    acore_log_success "Created .prettierrc"
+  fi
+
+  # .editorconfig
+  if [[ ! -f .editorconfig ]]; then
+    cat > .editorconfig << 'EOF'
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+
+[*.{js,json,yml,yaml}]
+indent_size = 2
+
+[*.sh]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+EOF
+    acore_log_success "Created .editorconfig"
+  fi
+
+  acore_log_success "Development environment setup complete"
+}
+
+# Usage
+setup_development_environment
 ```
 
 ### Error Handling Patterns
