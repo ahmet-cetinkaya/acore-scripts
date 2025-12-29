@@ -8,7 +8,8 @@ set -e
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Source logger
+# Source logger utilities
+# shellcheck source=/dev/null
 source "$SCRIPT_DIR/logger.sh"
 
 # Configuration (shfmt defaults)
@@ -100,6 +101,7 @@ acore_sh_format_file() {
   [[ "$VERBOSE" == "true" ]] && acore_log_info "Formatting shell script: $file"
 
   # Run shfmt
+  # shellcheck disable=SC2086
   if shfmt $SHFMT_OPTS "$file" 2> /dev/null; then
     if [[ "$CHECK_ONLY" == "true" ]]; then
       [[ "$VERBOSE" == "true" ]] && acore_log_success "File is properly formatted: $file"

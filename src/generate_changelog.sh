@@ -10,6 +10,7 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 MAIN_CHANGELOG="$PROJECT_ROOT/CHANGELOG.md"
 
 # Source logger utilities
+# shellcheck source=/dev/null
 source "$SCRIPT_DIR/logger.sh"
 
 # Function to show help
