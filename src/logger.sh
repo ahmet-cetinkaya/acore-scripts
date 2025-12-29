@@ -19,6 +19,14 @@ LOG_LEVEL="${LOG_LEVEL:-INFO}"
 LOG_PREFIX="${LOG_PREFIX:-true}"
 LOG_TIMESTAMP="${LOG_TIMESTAMP:-false}"
 LOG_COLOR="${LOG_COLOR:-true}"
+LOG_WIDTH="${LOG_WIDTH:-66}"
+
+# Utility function to repeat a character
+acore_repeat_char() {
+  local char=$1
+  local count=$2
+  printf "%${count}s" | tr ' ' "$char"
+}
 
 # Timestamp function
 get_timestamp() {
@@ -48,7 +56,7 @@ _print_with_formatting() {
     reset_code=$COLOR_NC
   fi
 
-  printf "${timestamp}${color_code}${prefix}${reset_code} $message\n"
+  printf "%b%b%b%b %s\n" "${timestamp}" "${color_code}" "${prefix}" "${reset_code}" "${message}"
 }
 
 # Logging functions
@@ -86,50 +94,58 @@ acore_log_critical() {
 
 # Utility functions
 acore_log_header() {
+  local title="$1"
+  local char="${2:-=}"
+  local separator
+  separator=$(acore_repeat_char "$char" "$LOG_WIDTH")
+
   printf "\n"
   if [[ "$LOG_COLOR" == "true" ]]; then
-    printf "${COLOR_CYAN}==================================================================${COLOR_NC}\n"
-    printf "$1\n"
-    printf "${COLOR_CYAN}==================================================================${COLOR_NC}\n"
+    printf "%b%s%b\n" "${COLOR_CYAN}" "${separator}" "${COLOR_NC}"
+    printf "%b%s%s%b %b%s%b\n" "${COLOR_CYAN}" "${char}" "${char}" "${COLOR_NC}" "${COLOR_WHITE}" "${title}" "${COLOR_NC}"
+    printf "%b%s%b\n" "${COLOR_CYAN}" "${separator}" "${COLOR_NC}"
   else
-    printf "==================================================================\n"
-    printf "$1\n"
-    printf "==================================================================\n"
+    printf "%s\n" "${separator}"
+    printf "%s%s %s\n" "${char}" "${char}" "${title}"
+    printf "%s\n" "${separator}"
   fi
   printf "\n"
 }
 
 acore_log_section() {
+  local char="${2:--}"
+  local separator
+  separator=$(acore_repeat_char "$char" 3)
   printf "\n"
   if [[ "$LOG_COLOR" == "true" ]]; then
-    printf "${COLOR_PURPLE}--- $1 ---${COLOR_NC}\n"
+    printf "%b%s %s %s%b\n" "${COLOR_PURPLE}" "${separator}" "$1" "${separator}" "${COLOR_NC}"
   else
-    printf "--- $1 ---\n"
+    printf "%s %s %s\n" "${separator}" "$1" "${separator}"
   fi
   printf "\n"
 }
 
 acore_log_divider() {
-  printf "\n"
-  printf "$(printf '=%.0s' 50)\n"
-  printf "\n"
+  local separator
+  separator=$(acore_repeat_char "-" "$LOG_WIDTH")
+  printf "\n%s\n\n" "${separator}"
 }
 
 # Special formatting functions
 acore_log_bold() {
   if [[ "$LOG_COLOR" == "true" ]]; then
-    printf "${COLOR_WHITE}$*${COLOR_NC}\n"
+    printf "%b%s%b\n" "${COLOR_WHITE}" "$*" "${COLOR_NC}"
   else
-    printf "$*\n"
+    printf "%s\n" "$*"
   fi
 }
 
 acore_log_italic() {
   # Note: Italic may not work in all terminals
   if [[ "$LOG_COLOR" == "true" ]]; then
-    printf "${COLOR_PURPLE}$*${COLOR_NC}\n"
+    printf "%b%s%b\n" "${COLOR_PURPLE}" "$*" "${COLOR_NC}"
   else
-    printf "$*\n"
+    printf "%s\n" "$*"
   fi
 }
 
@@ -156,11 +172,11 @@ acore_log_and_exit() {
 acore_log_spinner() {
   local pid=$1
   local delay=0.1
-  local spinstr='|/-\'
+  local spinstr="|/-\\"
 
   while kill -0 "$pid" 2> /dev/null; do
     local temp=${spinstr#?}
-    printf "\r${temp}" >&2
+    printf "\r%s" "${temp}" >&2
     spinstr=$temp${spinstr%"$temp"}
     sleep "$delay"
   done
