@@ -64,7 +64,6 @@ The acore-scripts project is in its early development phase with a strong founda
   - MIT License for open source distribution
   - Spell checking configuration (cspell.json)
   - Serena configuration for bash language server
-  - Claude.md for AI assistant integration
 
 ### Planned Components (Not Yet Implemented)
 
@@ -98,13 +97,6 @@ The acore-scripts project is in its early development phase with a strong founda
 - **Comprehensiveness**: Detailed requirements and specifications
 - **Technical Depth**: Clear technical requirements and constraints
 - **Structure**: Well-organized with clear sections
-
-#### CLAUDE.md
-
-- **Quality**: Excellent ⭐⭐⭐⭐⭐
-- **Developer Experience**: Comprehensive guidance for AI assistants
-- **Integration**: Clear patterns for project integration
-- **Standards**: Well-defined coding standards and practices
 
 ### Newly Created Documentation
 

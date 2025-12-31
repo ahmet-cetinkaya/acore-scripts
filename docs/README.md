@@ -15,10 +15,6 @@ Welcome to the acore-scripts documentation hub. This comprehensive documentation
 - **[Knowledge Base](KNOWLEDGE_BASE.md)** - Usage patterns, best practices, and common scenarios
 - **[Documentation Report](DOCUMENTATION_REPORT.md)** - Project analysis and current state assessment
 
-### 🛠️ For Developers
-
-- **[Claude Integration Guide](../CLAUDE.md)** - AI assistant integration patterns and guidelines
-
 ## 🎯 Quick Navigation
 
 ### By Role
@@ -39,7 +35,7 @@ Welcome to the acore-scripts documentation hub. This comprehensive documentation
 
 1. Understand project vision from [PRD](PRD.md)
 2. Review current state in [Documentation Report](DOCUMENTATION_REPORT.md)
-3. Check development standards in [Claude Guide](../CLAUDE.md)
+3. Review project vision in [PRD](PRD.md)
 
 ### By Topic
 
@@ -86,7 +82,7 @@ Welcome to the acore-scripts documentation hub. This comprehensive documentation
 → [Documentation Report](DOCUMENTATION_REPORT.md)
 
 **Contributing?**
-→ [PRD](PRD.md) | [Claude Guide](../CLAUDE.md) | [Contribution Guidelines](../README.md#contributing)
+→ [PRD](PRD.md) | [Contribution Guidelines](../README.md#contributing)
 
 ### Popular Topics
 
