@@ -40,8 +40,8 @@ ALL_VERSIONS=false
 VERSION_CODE=""
 CHANGELOG_TEXT=""
 
-for arg in "$@"; do
-  case $arg in
+while [ $# -gt 0 ]; do
+  case $1 in
     --help | -h)
       _show_help
       exit 0
@@ -54,11 +54,16 @@ for arg in "$@"; do
       ALL_VERSIONS=true
       shift
       ;;
+    -*)
+      acore_log_error "Unknown option: $1"
+      _show_help
+      exit 1
+      ;;
     *)
       if [ -z "$VERSION_CODE" ]; then
-        VERSION_CODE="$arg"
+        VERSION_CODE="$1"
       elif [ -z "$CHANGELOG_TEXT" ]; then
-        CHANGELOG_TEXT="$arg"
+        CHANGELOG_TEXT="$1"
       fi
       shift
       ;;
@@ -67,8 +72,12 @@ done
 
 # Get current version from git tags
 CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
+# Clean current version from 'v' prefix
+CURRENT_VERSION="${CURRENT_VERSION#v}"
 
+# Use provided version or current version, and clean 'v' prefix
 VERSION_CODE=${VERSION_CODE:-$CURRENT_VERSION}
+VERSION_CODE="${VERSION_CODE#v}"
 
 # Function to capitalize first letter of a string
 _capitalize_first_letter() {
@@ -332,35 +341,36 @@ EOF
 # Function to add or update footer with version links
 _update_footer() {
   local version="$1"
+  local clean_version="${version#v}"
 
   # Get the repo URL from git remote
   local repo_url
-  repo_url=$(git remote get-url origin 2> /dev/null | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//' || echo "https://github.com/USER/REPO")
+  repo_url=$(git remote get-url origin 2> /dev/null | sed 's#git@github.com:#https://github.com/#' | sed 's#\.git$##' || echo "https://github.com/USER/REPO")
 
   # Check if footer already exists
   if grep -q "\[unreleased\]:" "$MAIN_CHANGELOG"; then
     # Footer exists, update version links
     # Update the unreleased link
-    sed -i "s|\[unreleased\]:.*|[unreleased]: $repo_url/compare/v$version...HEAD|g" "$MAIN_CHANGELOG"
+    sed -i "s#\[unreleased\]:.*#[unreleased]: $repo_url/compare/v$clean_version...HEAD#g" "$MAIN_CHANGELOG"
 
     # Add new version link if not already present
-    if ! grep -q "\[$version\]:" "$MAIN_CHANGELOG"; then
+    if ! grep -q "\[$clean_version\]:" "$MAIN_CHANGELOG"; then
       # Find the unreleased line and add version link after it
-      awk -v repo_url="$repo_url" -v version="$version" '
+      awk -v repo_url="$repo_url" -v version="$clean_version" '
                 /\[unreleased\]:/ {
                     print
-                    print "[$version]: $repo_url/releases/tag/v$version"
+                    print "["version"]: "repo_url"/releases/tag/v"version
                 }
-                { print }
-            ' "$MAIN_CHANGELOG" >> "$MAIN_CHANGELOG.tmp"
+                !/\[unreleased\]:/ { print }
+            ' "$MAIN_CHANGELOG" > "$MAIN_CHANGELOG.tmp"
       mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
     fi
   else
     # No footer, add it
     cat >> "$MAIN_CHANGELOG" << EOF
 
-[unreleased]: $repo_url/compare/v$version...HEAD
-[$version]: $repo_url/releases/tag/v$version
+[unreleased]: $repo_url/compare/v$clean_version...HEAD
+[$clean_version]: $repo_url/releases/tag/v$clean_version
 EOF
   fi
 }
@@ -466,7 +476,9 @@ acore_changelog_generate() {
   local all_versions="$4"
 
   # Export variables for use in the script
-  export VERSION_CODE="${version:-$CURRENT_VERSION}"
+  # Clean version code
+  local current_version_clean="${version:-$VERSION_CODE}"
+  export VERSION_CODE="${current_version_clean#v}"
   export CHANGELOG_TEXT="$text"
   export AUTO_ACCEPT="${auto_accept:-false}"
   export ALL_VERSIONS="${all_versions:-false}"
@@ -514,7 +526,7 @@ acore_changelog_generate() {
       done)
       CHANGELOG_CONTENT="### Changed\n$CAPITALIZED_ITEMS"
     fi
-    _update_main_changelog "$CURRENT_VERSION" "$CHANGELOG_CONTENT"
+    _update_main_changelog "$VERSION_CODE" "$CHANGELOG_CONTENT"
     acore_log_success "Updated $MAIN_CHANGELOG"
   fi
 

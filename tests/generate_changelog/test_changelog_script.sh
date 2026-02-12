@@ -40,8 +40,8 @@ ALL_VERSIONS=false
 VERSION_CODE=""
 CHANGELOG_TEXT=""
 
-for arg in "$@"; do
-  case $arg in
+while [ $# -gt 0 ]; do
+  case $1 in
     --help | -h)
       _show_help
       exit 0
@@ -54,11 +54,16 @@ for arg in "$@"; do
       ALL_VERSIONS=true
       shift
       ;;
+    -*)
+      acore_log_error "Unknown option: $1"
+      _show_help
+      exit 1
+      ;;
     *)
       if [ -z "$VERSION_CODE" ]; then
-        VERSION_CODE="$arg"
+        VERSION_CODE="$1"
       elif [ -z "$CHANGELOG_TEXT" ]; then
-        CHANGELOG_TEXT="$arg"
+        CHANGELOG_TEXT="$1"
       fi
       shift
       ;;
@@ -67,7 +72,13 @@ done
 
 # Get current version from git tags or use default
 CURRENT_VERSION=$(git describe --tags --abbrev=0 2> /dev/null || echo "1.0.0")
+# Clean current version from 'v' prefix
+CURRENT_VERSION="${CURRENT_VERSION#v}"
+
+# If version was not provided as an argument, use current version
 VERSION_CODE=${VERSION_CODE:-$CURRENT_VERSION}
+# Ensure version code doesn't have 'v' prefix
+VERSION_CODE="${VERSION_CODE#v}"
 
 # Function to capitalize first letter of a string
 _capitalize_first_letter() {
@@ -144,7 +155,7 @@ _generate_from_commits() {
               if [ -z "$FIXED" ]; then
                 FIXED="- $DESCRIPTION"
               else
-                FIXED="$FIXED\\n- $DESCRIPTION"
+                FIXED="$FIXED\n- $DESCRIPTION"
               fi
               ;;
             "perf")
@@ -152,7 +163,7 @@ _generate_from_commits() {
               if [ -z "$CHANGED" ]; then
                 CHANGED="- $DESCRIPTION"
               else
-                CHANGED="$CHANGED\\n- $DESCRIPTION"
+                CHANGED="$CHANGED\n- $DESCRIPTION"
               fi
               ;;
             "refactor")
@@ -161,7 +172,7 @@ _generate_from_commits() {
                 if [ -z "$CHANGED" ]; then
                   CHANGED="- $DESCRIPTION"
                 else
-                  CHANGED="$CHANGED\\n- $DESCRIPTION"
+                  CHANGED="$CHANGED\n- $DESCRIPTION"
                 fi
               fi
               ;;
@@ -185,19 +196,19 @@ _generate_from_commits() {
               if [ -z "$ADDED" ]; then
                 ADDED="- $MESSAGE"
               else
-                ADDED="$ADDED\\n- $MESSAGE"
+                ADDED="$ADDED\n- $MESSAGE"
               fi
             elif [[ "$MESSAGE" =~ ^(Fix|Resolve|Correct) ]]; then
               if [ -z "$FIXED" ]; then
                 FIXED="- $MESSAGE"
               else
-                FIXED="$FIXED\\n- $MESSAGE"
+                FIXED="$FIXED\n- $MESSAGE"
               fi
             else
               if [ -z "$CHANGED" ]; then
                 CHANGED="- $MESSAGE"
               else
-                CHANGED="$CHANGED\\n- $MESSAGE"
+                CHANGED="$CHANGED\n- $MESSAGE"
               fi
             fi
           fi
@@ -211,46 +222,46 @@ _generate_from_commits() {
   CHANGELOG_SECTIONS=""
 
   if [ -n "$ADDED" ]; then
-    CHANGELOG_SECTIONS="### Added\\n$ADDED\\n"
+    CHANGELOG_SECTIONS="### Added\n$ADDED\n"
   fi
 
   if [ -n "$CHANGED" ]; then
     if [ -n "$CHANGELOG_SECTIONS" ]; then
-      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\\n### Changed\\n$CHANGED\\n"
+      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Changed\n$CHANGED\n"
     else
-      CHANGELOG_SECTIONS="### Changed\\n$CHANGED\\n"
+      CHANGELOG_SECTIONS="### Changed\n$CHANGED\n"
     fi
   fi
 
   if [ -n "$DEPRECATED" ]; then
     if [ -n "$CHANGELOG_SECTIONS" ]; then
-      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\\n### Deprecated\\n$DEPRECATED\\n"
+      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Deprecated\n$DEPRECATED\n"
     else
-      CHANGELOG_SECTIONS="### Deprecated\\n$DEPRECATED\\n"
+      CHANGELOG_SECTIONS="### Deprecated\n$DEPRECATED\n"
     fi
   fi
 
   if [ -n "$REMOVED" ]; then
     if [ -n "$CHANGELOG_SECTIONS" ]; then
-      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\\n### Removed\\n$REMOVED\\n"
+      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Removed\n$REMOVED\n"
     else
-      CHANGELOG_SECTIONS="### Removed\\n$REMOVED\\n"
+      CHANGELOG_SECTIONS="### Removed\n$REMOVED\n"
     fi
   fi
 
   if [ -n "$FIXED" ]; then
     if [ -n "$CHANGELOG_SECTIONS" ]; then
-      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\\n### Fixed\\n$FIXED\\n"
+      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Fixed\n$FIXED\n"
     else
-      CHANGELOG_SECTIONS="### Fixed\\n$FIXED\\n"
+      CHANGELOG_SECTIONS="### Fixed\n$FIXED\n"
     fi
   fi
 
   if [ -n "$SECURITY" ]; then
     if [ -n "$CHANGELOG_SECTIONS" ]; then
-      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\\n### Security\\n$SECURITY\\n"
+      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Security\n$SECURITY\n"
     else
-      CHANGELOG_SECTIONS="### Security\\n$SECURITY\\n"
+      CHANGELOG_SECTIONS="### Security\n$SECURITY\n"
     fi
   fi
 
@@ -260,35 +271,40 @@ _generate_from_commits() {
 # Function to update footer with version links
 _update_footer() {
   local version="$1"
+  local clean_version="${version#v}"
 
   # Get the repo URL from git remote
   local repo_url
-  repo_url=$(git remote get-url origin 2> /dev/null | sed 's/git@github.com:/https:\\/\\/github.com\\//' | sed 's/\\.git$//' || echo "https://github.com/USER/REPO")
+  repo_url=$(git remote get-url origin 2> /dev/null | sed 's#git@github.com:#https://github.com/#' | sed 's#\.git$##' || echo "https://github.com/USER/REPO")
 
   # Check if footer already exists
-  if grep -q "\\[unreleased\\]:" "$MAIN_CHANGELOG"; then
+  if grep -q "\[unreleased\]:" "$MAIN_CHANGELOG"; then
     # Footer exists, update version links
     # Update the unreleased link
-    sed -i "s|\\[unreleased\\]:.*|[unreleased]: $repo_url/compare/v$version...HEAD|g" "$MAIN_CHANGELOG"
+    sed -i "s#\[unreleased\]:.*#[unreleased]: $repo_url/compare/v$clean_version...HEAD#g" "$MAIN_CHANGELOG"
 
     # Add new version link if not already present
-    if ! grep -q "\\[$version\\]:" "$MAIN_CHANGELOG"; then
+    if ! grep -q "\[$clean_version\]:" "$MAIN_CHANGELOG"; then
       # Find the unreleased line and add version link after it
-      awk -v repo_url="$repo_url" -v version="$version" '
-                /\\[unreleased\\]:/ {
+      awk -v repo_url="$repo_url" -v version="$clean_version" '
+                /\[unreleased\]:/ {
                     print
-                    print "[$version]: $repo_url/releases/tag/v$version"
+                    print "["version"]: "repo_url"/releases/tag/v"version
                 }
-                { print }
+                !/\[unreleased\]:/ { print }
             ' "$MAIN_CHANGELOG" > "$MAIN_CHANGELOG.tmp"
       mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
+    else
+      # Version link exists but might have a wrong URL (e.g. from a previous failed run with empty URL)
+      # Robustly update it
+      sed -i "s#\[$clean_version\]:.*#\[$clean_version\]: $repo_url/releases/tag/v$clean_version#g" "$MAIN_CHANGELOG"
     fi
   else
     # No footer, add it
     cat >> "$MAIN_CHANGELOG" << EOF
 
-[unreleased]: $repo_url/compare/v$version...HEAD
-[$version]: $repo_url/releases/tag/v$version
+[unreleased]: $repo_url/compare/v$clean_version...HEAD
+[$clean_version]: $repo_url/releases/tag/v$clean_version
 EOF
   fi
 }
@@ -300,7 +316,7 @@ _update_main_changelog() {
   local date
   date=$(date +%Y-%m-%d)
 
-  local new_entry="## [$version] - $date\\n\\n$changelog_content"
+  local new_entry="## [$version] - $date\n\n$changelog_content"
 
   if [ ! -f "$MAIN_CHANGELOG" ]; then
     # Create new CHANGELOG.md
@@ -321,10 +337,10 @@ EOF
   else
     # Update existing CHANGELOG.md
     # Insert new entry after "## [Unreleased]" line
-    if grep -q "## \\[Unreleased\\]" "$MAIN_CHANGELOG"; then
+    if grep -q "## \[Unreleased\]" "$MAIN_CHANGELOG"; then
       # Create temporary file with new entry
       awk -v new_entry="$new_entry" '
-                /^## \\[Unreleased\\]/ {
+                /^## \[Unreleased\]/ {
                     print $0
                     print ""
                     printf "%s", new_entry
@@ -367,19 +383,27 @@ acore_changelog_generate() {
   local auto_accept="$3"
   local all_versions="$4"
 
+  cd "$TEST_DIR/temp"
+
   # Export variables for use in the script
-  export VERSION_CODE="${version:-$CURRENT_VERSION}"
+  # Clean version code
+  local current_version_clean="${version:-$VERSION_CODE}"
+  export VERSION_CODE="${current_version_clean#v}"
   export CHANGELOG_TEXT="$text"
   export AUTO_ACCEPT="${auto_accept:-false}"
   export ALL_VERSIONS="${all_versions:-false}"
 
   acore_log_info "Generating changelog for version $VERSION_CODE..."
 
+  if [ -z "$CHANGELOG_TEXT" ] && [ ! -t 0 ]; then
+    CHANGELOG_TEXT=$(cat)
+  fi
+
   if [ -z "$CHANGELOG_TEXT" ]; then
     CHANGELOG_CONTENT=$(_generate_from_commits)
     if [ -z "$CHANGELOG_CONTENT" ]; then
       acore_log_warning "No user-facing changes found since last version."
-      CHANGELOG_CONTENT="### Changed\\n- Internal improvements and maintenance"
+      CHANGELOG_CONTENT="### Changed\n- Internal improvements and maintenance"
     fi
     acore_log_header "Generated Changelog"
     echo -e "$CHANGELOG_CONTENT"
@@ -392,15 +416,15 @@ acore_changelog_generate() {
     fi
   else
     # Manual changelog
-    CAPITALIZED_ITEMS=$(echo -e "$CHANGELOG_TEXT" | sed 's/^• /- /g' | while IFS= read -r line; do
-      if [[ "$line" =~ ^-\\\ (.+)$ ]]; then
+    CAPITALIZED_ITEMS=$(echo -e "$CHANGELOG_TEXT" | sed 's/^[•-] /- /g' | while IFS= read -r line; do
+      if [[ "$line" =~ ^-\ (.+)$ ]]; then
         content="${BASH_REMATCH[1]}"
         echo "- $(_capitalize_first_letter "$content")"
       elif [ -n "$line" ]; then
         echo "- $(_capitalize_first_letter "$line")"
       fi
     done)
-    CHANGELOG_CONTENT="### Changed\\n$CAPITALIZED_ITEMS"
+    CHANGELOG_CONTENT="### Changed\n$CAPITALIZED_ITEMS"
   fi
   _update_main_changelog "$VERSION_CODE" "$CHANGELOG_CONTENT"
   acore_log_success "Updated $MAIN_CHANGELOG"
