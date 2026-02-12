@@ -6,7 +6,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || dirname "$(dirname "$SCRIPT_DIR")")
 MAIN_CHANGELOG="$PROJECT_ROOT/CHANGELOG.md"
 
 # Source logger utilities
@@ -65,8 +65,9 @@ for arg in "$@"; do
   esac
 done
 
-# Get current version from git tags or use default
-CURRENT_VERSION=$(git describe --tags --abbrev=0 2> /dev/null || echo "1.0.0")
+# Get current version from git tags
+CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
+
 VERSION_CODE=${VERSION_CODE:-$CURRENT_VERSION}
 
 # Function to capitalize first letter of a string
@@ -503,7 +504,7 @@ acore_changelog_generate() {
       fi
     else
       # Manual changelog
-      CAPITALIZED_ITEMS=$(echo -e "$CHANGELOG_TEXT" | sed 's/^• /- /g' | while IFS= read -r line; do
+      CAPITALIZED_ITEMS=$(echo -e "$CHANGELOG_TEXT" | sed 's/^[•-] /- /g' | while IFS= read -r line; do
         if [[ "$line" =~ ^-\ (.+)$ ]]; then
           content="${BASH_REMATCH[1]}"
           echo "- $(_capitalize_first_letter "$content")"

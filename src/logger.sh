@@ -56,7 +56,7 @@ _print_with_formatting() {
     reset_code=$COLOR_NC
   fi
 
-  printf "%b%b%b%b %s\n" "${timestamp}" "${color_code}" "${prefix}" "${reset_code}" "${message}"
+  printf "%b%b%b%b %s\n" "${timestamp}" "${color_code}" "${prefix}" "${reset_code}" "${message}" >&2
 }
 
 # Logging functions
@@ -99,30 +99,30 @@ acore_log_header() {
   local separator
   separator=$(acore_repeat_char "$char" "$LOG_WIDTH")
 
-  printf "\n"
+  printf "\n" >&2
   if [[ "$LOG_COLOR" == "true" ]]; then
-    printf "%b%s%b\n" "${COLOR_CYAN}" "${separator}" "${COLOR_NC}"
-    printf "%b%s%s%b %b%s%b\n" "${COLOR_CYAN}" "${char}" "${char}" "${COLOR_NC}" "${COLOR_WHITE}" "${title}" "${COLOR_NC}"
-    printf "%b%s%b\n" "${COLOR_CYAN}" "${separator}" "${COLOR_NC}"
+    printf "%b%s%b\n" "${COLOR_CYAN}" "${separator}" "${COLOR_NC}" >&2
+    printf "%b%s%s%b %b%s%b\n" "${COLOR_CYAN}" "${char}" "${char}" "${COLOR_NC}" "${COLOR_WHITE}" "${title}" "${COLOR_NC}" >&2
+    printf "%b%s%b\n" "${COLOR_CYAN}" "${separator}" "${COLOR_NC}" >&2
   else
-    printf "%s\n" "${separator}"
-    printf "%s%s %s\n" "${char}" "${char}" "${title}"
-    printf "%s\n" "${separator}"
+    printf "%s\n" "${separator}" >&2
+    printf "%s%s %s\n" "${char}" "${char}" "${title}" >&2
+    printf "%s\n" "${separator}" >&2
   fi
-  printf "\n"
+  printf "\n" >&2
 }
 
 acore_log_section() {
   local char="${2:--}"
   local separator
   separator=$(acore_repeat_char "$char" 3)
-  printf "\n"
+  printf "\n" >&2
   if [[ "$LOG_COLOR" == "true" ]]; then
-    printf "%b%s %s %s%b\n" "${COLOR_PURPLE}" "${separator}" "$1" "${separator}" "${COLOR_NC}"
+    printf "%b%s %s %s%b\n" "${COLOR_PURPLE}" "${separator}" "$1" "${separator}" "${COLOR_NC}" >&2
   else
-    printf "%s %s %s\n" "${separator}" "$1" "${separator}"
+    printf "%s %s %s\n" "${separator}" "$1" "${separator}" >&2
   fi
-  printf "\n"
+  printf "\n" >&2
 }
 
 acore_log_divider() {
