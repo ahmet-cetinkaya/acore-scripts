@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # 📝 Markdown formatting utility
 # Formats Markdown files using Prettier
