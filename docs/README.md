@@ -57,7 +57,7 @@ Welcome to the acore-scripts documentation hub. This comprehensive documentation
 
 - [Common Scenarios](KNOWLEDGE_BASE.md#common-scenarios)
 - [Error Handling Patterns](KNOWLEDGE_BASE.md#error-handling-patterns)
-- [Performance Considerations](Knowledge-Reference.md#performance-considerations)
+- [Performance Considerations](KNOWLEDGE_BASE.md#performance-considerations)
 
 #### **Advanced Usage**
 
@@ -228,4 +228,4 @@ The documentation is designed to help you:
 
 ---
 
-_This documentation hub is maintained by the acore-scripts community. Last updated: 2025-12-13_
+_This docution hub is maintained by the acore-scripts community. Last updated: 2025-12-13_
