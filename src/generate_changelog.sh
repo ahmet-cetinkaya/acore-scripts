@@ -6,7 +6,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || dirname "$(dirname "$SCRIPT_DIR")")
+PROJECT_ROOT=$(git rev-parse --show-toplevel 2> /dev/null || dirname "$(dirname "$SCRIPT_DIR")")
 MAIN_CHANGELOG="$PROJECT_ROOT/CHANGELOG.md"
 
 # Source logger utilities
@@ -71,7 +71,7 @@ while [ $# -gt 0 ]; do
 done
 
 # Get current version from git tags
-CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
+CURRENT_VERSION=$(git describe --tags --abbrev=0 2> /dev/null || echo "1.0.0")
 # Clean current version from 'v' prefix
 CURRENT_VERSION="${CURRENT_VERSION#v}"
 
