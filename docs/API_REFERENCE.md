@@ -22,7 +22,8 @@
 
 ## Logger Utilities (`logger.sh`)
 
-A comprehensive logging library for shell scripts providing colored output, configurable levels, timestamps, and formatting utilities.
+A comprehensive logging library for shell scripts providing colored output,
+configurable levels, timestamps, and formatting utilities.
 
 ### Usage
 
@@ -59,7 +60,8 @@ export LOG_COLOR="false"
 
 #### `acore_log_debug(message...)`
 
-Prints debug messages in gray. Only displayed when `LOG_LEVEL` is set to `"DEBUG"`.
+Prints debug messages in gray. Only displayed when `LOG_LEVEL` is set to
+`"DEBUG"`.
 
 **Parameters:**
 
@@ -74,7 +76,8 @@ acore_log_debug "Processing file" "$filename"
 
 #### `acore_log_info(message...)`
 
-Prints informational messages in blue. Displayed when `LOG_LEVEL` is `"DEBUG"` or `"INFO"`.
+Prints informational messages in blue. Displayed when `LOG_LEVEL` is `"DEBUG"`
+or `"INFO"`.
 
 **Parameters:**
 
@@ -119,7 +122,8 @@ acore_log_warning "Configuration file not found, using defaults"
 
 #### `acore_log_error(message...)`
 
-Prints error messages in red to stderr. Always displayed regardless of `LOG_LEVEL`.
+Prints error messages in red to stderr. Always displayed regardless of
+`LOG_LEVEL`.
 
 **Parameters:**
 
@@ -134,7 +138,8 @@ acore_log_error "File not found:" "$filename"
 
 #### `acore_log_critical(message...)`
 
-Prints critical error messages in red to stderr. Always displayed regardless of `LOG_LEVEL`.
+Prints critical error messages in red to stderr. Always displayed regardless of
+`LOG_LEVEL`.
 
 **Parameters:**
 
@@ -213,7 +218,8 @@ acore_log_bold "IMPORTANT:" "Read this carefully"
 
 #### `acore_log_italic(message...)`
 
-Prints text in purple (simulating italic when colors are enabled). Note: Italic may not work in all terminals.
+Prints text in purple (simulating italic when colors are enabled). Note: Italic
+may not work in all terminals.
 
 **Parameters:**
 
@@ -266,7 +272,8 @@ acore_log_and_exit 2 "Invalid arguments provided"
 
 #### `acore_log_spinner(pid)`
 
-Displays a spinning cursor while a process is running. This function runs in the background and should be used with background processes.
+Displays a spinning cursor while a process is running. This function runs in the
+background and should be used with background processes.
 
 **Parameters:**
 
@@ -296,7 +303,8 @@ Updates logging configuration dynamically.
 
 - `level`: New log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 - `show_prefix` (optional): Enable/disable prefixes (default: current value)
-- `show_timestamp` (optional): Enable/disable timestamps (default: current value)
+- `show_timestamp` (optional): Enable/disable timestamps (default: current
+  value)
 - `use_color` (optional): Enable/disable colors (default: current value)
 
 **Example:**
@@ -340,7 +348,7 @@ echo -e "${COLOR_YELLOW}Warning:${COLOR_NC} Check configuration"
 ### Basic Script Integration
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Source the logger (relative path)
 source "$(dirname "$0")/path/to/logger.sh"
@@ -368,7 +376,7 @@ acore_log_success "Application completed successfully"
 ### Integration with Git Submodule
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 
 # When using as git submodule in scripts/acore/
 source "$(dirname "$0")/../acore/src/logger.sh"
@@ -388,7 +396,7 @@ fi
 ### Multi-Level Logging Example
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 
 source logger.sh
 
@@ -427,11 +435,14 @@ When adding new scripts or functions:
 
 ## Format Utilities
 
-The format utilities provide consistent code formatting for various file types using industry-standard tools. All format scripts can be used as libraries (sourced) or executed directly.
+The format utilities provide consistent code formatting for various file types
+using industry-standard tools. All format scripts can be used as libraries
+(sourced) or executed directly.
 
 ### Common Characteristics
 
-- **Graceful Dependency Handling**: Scripts warn when required tools are missing but don't fail
+- **Graceful Dependency Handling**: Scripts warn when required tools are missing
+  but don't fail
 - **Git Integration**: Respect `.gitignore` and exclude `.git` directory
 - **Logging**: Use the `logger.sh` utility for consistent output
 - **Environment Configuration**: Support environment variable overrides
@@ -527,7 +538,7 @@ acore_format_json_files
 ### Integration Example
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # Pre-commit hook for JSON formatting
 
 source "$(dirname "$0")/../acore/src/format_json.sh"
@@ -614,7 +625,7 @@ acore_format_yaml_files
 ### Integration Example
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # CI/CD pipeline YAML formatting check
 
 source "$(dirname "$0")/acore/src/format_yaml.sh"
@@ -697,7 +708,7 @@ acore_format_md_files
 ### Integration Example
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # Documentation formatting script
 
 source "$(dirname "$0")/acore/src/format_md.sh"
@@ -711,11 +722,13 @@ acore_log_success "Documentation formatting complete"
 
 ## Shell Script Formatter (`format_sh.sh`)
 
-Formats shell scripts using shfmt with comprehensive options and git integration.
+Formats shell scripts using shfmt with comprehensive options and git
+integration.
 
 ### Dependencies
 
-- **shfmt**: Required for shell script formatting (gracefully handled if missing)
+- **shfmt**: Required for shell script formatting (gracefully handled if
+  missing)
 
 ### Usage
 
@@ -895,7 +908,7 @@ Main function to format all shell scripts in the project.
 #### Pre-commit Hook
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # Pre-commit hook for shell script formatting
 
 source "$(dirname "$0")/../acore/src/format_sh.sh"
@@ -916,7 +929,7 @@ fi
 #### CI/CD Pipeline
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # GitHub Actions step for shell script validation
 
 name: Check Shell Script Formatting
@@ -937,7 +950,7 @@ run: |
 #### Custom Configuration
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # Custom formatting configuration
 
 source "$(dirname "$0")/format_sh.sh"
@@ -952,4 +965,5 @@ acore_log_header "Custom Shell Script Formatting"
 acore_sh_format_all
 ```
 
-For more information, see the [main documentation](README.md) and [Product Requirements Document](PRD.md).
+For more information, see the [main documentation](README.md) and
+[Product Requirements Document](PRD.md).

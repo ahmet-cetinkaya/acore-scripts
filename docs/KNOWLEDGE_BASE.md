@@ -1,6 +1,7 @@
 # Knowledge Base - acore-scripts
 
-A comprehensive collection of usage patterns, best practices, and solutions for common scenarios when working with acore-scripts.
+A comprehensive collection of usage patterns, best practices, and solutions for
+common scenarios when working with acore-scripts.
 
 ## Table of Contents
 
@@ -89,7 +90,7 @@ chmod +x your-project/scripts/logger.sh
 Once installed, add this to your shell scripts to enable logging:
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Source the logger (adjust path based on installation method)
 source "$(dirname "$0")/path/to/logger.sh"
@@ -103,7 +104,7 @@ acore_log_info "Script started"
 Create your first script with logging:
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # File: my-first-script.sh
 
 # Source the logger (for git submodule)
@@ -136,7 +137,7 @@ acore_log_success "All files processed successfully"
 #### Progressive Verbosity
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Start with normal verbosity
@@ -156,7 +157,7 @@ acore_log_info "General information"
 #### Environment-based Configuration
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Configure based on environment
@@ -178,7 +179,7 @@ acore_log_info "Environment: $ENVIRONMENT"
 #### Contextual Logging
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Function with contextual logging
@@ -213,7 +214,7 @@ process_file "data.txt"
 Format all supported file types in a project:
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # format-all.sh - Universal code formatter
 
 # Source all format utilities
@@ -251,7 +252,7 @@ format_all_files
 #### Pre-commit Formatting Hook
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # .git/hooks/pre-commit
 
 # Source format utilities
@@ -308,7 +309,7 @@ pre_commit_format_check
 #### Custom Formatting Configuration
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # Custom formatting with project-specific rules
 
 source "$(dirname "$0")/acore/src/format_sh.sh"
@@ -343,7 +344,7 @@ format_shell_scripts_custom
 #### CI/CD Formatting Validation
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # CI formatting validation pipeline
 
 validate_formatting() {
@@ -412,7 +413,7 @@ fi
 #### Selective Formatting
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # Format only modified or specific files
 
 source "$(dirname "$0")/acore/src/format_sh.sh"
@@ -475,7 +476,7 @@ format_directory "./scripts"  # Format all files in scripts directory
 #### Development Environment Formatting
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # Development setup with formatting tools
 
 setup_development_environment() {
@@ -576,7 +577,7 @@ setup_development_environment
 #### Exit on Error with Logging
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Helper function for error handling
@@ -597,7 +598,7 @@ acore_log_success "All required files found"
 #### Command Validation
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Validate commands before execution
@@ -620,7 +621,7 @@ validate_commands
 #### Try-Catch Pattern
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Simulate try-catch with logging
@@ -649,7 +650,7 @@ try_command "Running tests" npm test
 #### Configuration File Loading
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Load configuration with validation
@@ -683,7 +684,7 @@ acore_log_info "Configuration: LOG_LEVEL=$LOG_LEVEL"
 #### Command Line Argument Parsing
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Parse command line arguments
@@ -731,7 +732,7 @@ parse_arguments "$@"
 #### Multi-Script Projects
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # File: scripts/common.sh
 
 # Common initialization for all scripts
@@ -751,7 +752,7 @@ init_project() {
 ```
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # File: scripts/deploy.sh
 
 # Use common initialization
@@ -765,7 +766,7 @@ acore_log_info "Starting deployment..."
 #### Pipeline Integration
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # CI/CD Pipeline Script
 source logger.sh
 
@@ -805,7 +806,7 @@ run_pipeline
 ### Deployment Scripts
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # deploy.sh - Application deployment script
 source "$(dirname "$0")/../scripts/acore/src/logger.sh"
 
@@ -857,7 +858,7 @@ deploy_application
 ### Build Scripts
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # build.sh - Application build script
 source logger.sh
 
@@ -914,7 +915,7 @@ build_application "$1"
 ### Database Scripts
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # db-backup.sh - Database backup script
 source logger.sh
 
@@ -972,7 +973,7 @@ backup_database
 ### Maintenance Scripts
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # maintenance.sh - System maintenance script
 source logger.sh
 
@@ -1124,7 +1125,7 @@ acore_set_log_config "ERROR"
 Enable comprehensive debugging:
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Enable maximum verbosity
@@ -1196,7 +1197,7 @@ The logger uses minimal memory:
 ### Custom Log Handlers
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Custom log handler for external services
@@ -1235,7 +1236,7 @@ log_and_send "INFO" "Application started"
 ### Dynamic Configuration
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Load configuration from multiple sources
@@ -1268,7 +1269,7 @@ load_configuration() {
 ### Integration with Monitoring
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 source logger.sh
 
 # Metrics collection with logging
@@ -1310,8 +1311,10 @@ When adding new patterns or examples:
 3. **Include Error Handling**: Show proper error handling for each scenario
 4. **Cross-Reference**: Link to related patterns and documentation
 
-For contributions and improvements, please see the [main repository](https://github.com/ahmet-cetinkaya/acore-scripts).
+For contributions and improvements, please see the
+[main repository](https://github.com/ahmet-cetinkaya/acore-scripts).
 
 ---
 
-_This knowledge base is continuously updated with new patterns and solutions based on real-world usage and community feedback._
+_This knowledge base is continuously updated with new patterns and solutions
+based on real-world usage and community feedback._

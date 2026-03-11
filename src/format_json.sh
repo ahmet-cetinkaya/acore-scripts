@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # 📄 JSON formatting utility
 # Formats JSON files using Prettier

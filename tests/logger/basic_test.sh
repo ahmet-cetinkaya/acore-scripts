@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Basic test suite for logger.sh
 # Tests core logging functionality and configuration

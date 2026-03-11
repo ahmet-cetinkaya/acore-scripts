@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # 📋 YAML formatting utility
 # Formats YAML files using Prettier

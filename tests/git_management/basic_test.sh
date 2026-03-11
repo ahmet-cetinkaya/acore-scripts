@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Basic test suite for manage-git-release-tag.sh
 # Tests git tag management functionality
@@ -212,7 +212,7 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 url_test_file="$TEMP_DIR/test_url_extraction.sh"
 
 cat > "$url_test_file.sh" << 'EOF'
-#!/bin/bash
+#!/usr/bin/env bash
 # Simulate the URL detection part of the script
 repo_url=$(git remote get-url origin 2>/dev/null | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//' || echo "https://github.com/USER/REPO")
 echo "Detected URL: $repo_url"

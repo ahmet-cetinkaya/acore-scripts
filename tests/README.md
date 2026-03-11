@@ -1,6 +1,7 @@
 # acore-scripts Test Suite
 
-This directory contains comprehensive test suites for all acore-scripts utilities.
+This directory contains comprehensive test suites for all acore-scripts
+utilities.
 
 ## Quick Start
 
@@ -137,7 +138,7 @@ chmod +x tests/generate_changelog/basic_test.sh
 ### Test Template
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 # Source logger

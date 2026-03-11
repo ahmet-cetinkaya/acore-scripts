@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Script to safely manage git tags with interactive confirmations
 # Usage: ./release-git-tag-manage.sh --help

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Basic test suite for format utilities
 # Tests JSON, YAML, Markdown, and Shell script formatting
@@ -95,7 +95,7 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 # Create test shell script
 cat > test.sh << 'EOF'
-#!/bin/bash
+#!/usr/bin/env bash
 # Test script
 
 echo "Hello World"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Test suite for generate_changelog.sh script
 # Usage: ./tests/generate_changelog/test_generate_changelog.sh

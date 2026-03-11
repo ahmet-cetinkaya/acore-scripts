@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Basic test suite for generate_changelog.sh
 # Focuses on core functionality with isolated test environment

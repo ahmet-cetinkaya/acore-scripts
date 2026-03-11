@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Universal test runner for all acore-scripts tests
 # Usage: ./tests/run-tests.sh [test-name]

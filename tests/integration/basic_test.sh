@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Integration test suite for acore-scripts
 # Tests cross-script functionality and workflow integration
@@ -146,7 +146,7 @@ nested:
   key: value
 EOF
 echo "# Markdown Test" > test.md
-echo "#!/bin/bash" > test.sh
+echo "#!/usr/bin/env bash" > test.sh
 echo 'echo "test"' >> test.sh
 
 # Test running multiple format utilities

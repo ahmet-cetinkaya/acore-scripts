@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Test version of generate_changelog.sh for isolated testing
 # This is a modified version that works in test directories

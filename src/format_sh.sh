@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # 🐚 Shell script formatting utility
 # Formats shell scripts using shfmt

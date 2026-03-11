@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Universal logging utilities for shell scripts
 # Provides colored output with configurable levels and formatting
