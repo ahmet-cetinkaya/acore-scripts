@@ -2,7 +2,9 @@
 
 # `acore-scripts` ![GitHub stars](https://img.shields.io/github/stars/ahmet-cetinkaya/acore-scripts?style=social) ![GitHub forks](https://img.shields.io/github/forks/ahmet-cetinkaya/acore-scripts?style=social) [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?&logo=buy-me-a-coffee&logoColor=black)](https://ahmetcetinkaya.me/donate)
 
-A collection of reusable bash scripts to eliminate code duplication across projects. These scripts provide common utilities for logging, changelog generation, version management, and more.
+A collection of reusable bash scripts to eliminate code duplication across
+projects. These scripts provide common utilities for logging, changelog
+generation, version management, and more.
 
 ## ⚡ Getting Started
 
@@ -38,7 +40,8 @@ cp acore-scripts/src/_common.sh your-project/scripts/
 
 ## 📚 Documentation
 
-For detailed requirements and design decisions, see the [Product Requirements Document](docs/PRD.md).
+For detailed requirements and design decisions, see the
+[Product Requirements Document](docs/PRD.md).
 
 ## 🤝 Contributing
 
@@ -60,7 +63,8 @@ If you'd like to contribute, please follow these steps:
 
 ## 📄 License
 
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 - see the
+[LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 

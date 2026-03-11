@@ -4,18 +4,23 @@
 
 ### Vision
 
-To create a set of common, reusable scripts that eliminate code duplication across projects.
+To create a set of common, reusable scripts that eliminate code duplication
+across projects.
 
 ### Mission
 
-Provide project-agnostic utility scripts that can be shared across multiple projects, reducing maintenance overhead and ensuring consistency in common operations like logging, changelog generation, and version management.
+Provide project-agnostic utility scripts that can be shared across multiple
+projects, reducing maintenance overhead and ensuring consistency in common
+operations like logging, changelog generation, and version management.
 
 ### Value Proposition
 
-- **Avoid Code Duplication**: Single source of truth for common script functionality
+- **Avoid Code Duplication**: Single source of truth for common script
+  functionality
 - **Easy Integration**: Simple to include in any project
 - **Maintainable**: Centralized updates benefit all projects
-- **Consistent Experience**: Standardized behavior across all projects using the scripts
+- **Consistent Experience**: Standardized behavior across all projects using the
+  scripts
 
 ### Key Differentiators
 
@@ -76,7 +81,8 @@ Provide project-agnostic utility scripts that can be shared across multiple proj
 
 ### Goals
 
-1. **Centralized Utilities** - Single source of truth for common script functionality
+1. **Centralized Utilities** - Single source of truth for common script
+   functionality
 2. **Easy Integration** - Simple to include in any project with minimal setup
 3. **Proven Solutions** - Based on existing, tested scripts
 4. **DRY Principle** - Eliminate code duplication across projects
@@ -166,4 +172,5 @@ acore-scripts/
 
 ---
 
-_This PRD defines the requirements for creating reusable, common scripts to eliminate code duplication across projects._
+_This PRD defines the requirements for creating reusable, common scripts to
+eliminate code duplication across projects._

@@ -1,19 +1,26 @@
 # Documentation Hub
 
-Welcome to the acore-scripts documentation hub. This comprehensive documentation suite provides everything you need to understand, use, and contribute to the acore-scripts project.
+Welcome to the acore-scripts documentation hub. This comprehensive documentation
+suite provides everything you need to understand, use, and contribute to the
+acore-scripts project.
 
 ## 📚 Documentation Overview
 
 ### 🚀 Getting Started
 
-- **[Main README](../README.md)** - Project overview, installation, and quick start
-- **[Product Requirements Document](PRD.md)** - Detailed requirements and design specifications
-- **[API Reference](API_REFERENCE.md)** - Complete API documentation for all scripts
+- **[Main README](../README.md)** - Project overview, installation, and quick
+  start
+- **[Product Requirements Document](PRD.md)** - Detailed requirements and design
+  specifications
+- **[API Reference](API_REFERENCE.md)** - Complete API documentation for all
+  scripts
 
 ### 📖 Learning Resources
 
-- **[Knowledge Base](KNOWLEDGE_BASE.md)** - Usage patterns, best practices, and common scenarios
-- **[Documentation Report](DOCUMENTATION_REPORT.md)** - Project analysis and current state assessment
+- **[Knowledge Base](KNOWLEDGE_BASE.md)** - Usage patterns, best practices, and
+  common scenarios
+- **[Documentation Report](DOCUMENTATION_REPORT.md)** - Project analysis and
+  current state assessment
 
 ## 🎯 Quick Navigation
 
@@ -22,7 +29,8 @@ Welcome to the acore-scripts documentation hub. This comprehensive documentation
 #### **New Users**
 
 1. Start with [Main README](../README.md) for installation
-2. Read the [Getting Started section in Knowledge Base](KNOWLEDGE_BASE.md#getting-started)
+2. Read the
+   [Getting Started section in Knowledge Base](KNOWLEDGE_BASE.md#getting-started)
 3. Explore [Usage Patterns](KNOWLEDGE_BASE.md#usage-patterns) for examples
 
 #### **Script Authors**
@@ -69,20 +77,18 @@ Welcome to the acore-scripts documentation hub. This comprehensive documentation
 
 ### Looking For Something Specific?
 
-**Installation Issues?**
-→ [Installation Methods](../README.md#installation) | [Troubleshooting](KNOWLEDGE_BASE.md#troubleshooting)
+**Installation Issues?** → [Installation Methods](../README.md#installation) |
+[Troubleshooting](KNOWLEDGE_BASE.md#troubleshooting)
 
-**Function Documentation?**
-→ [API Reference](API_REFERENCE.md)
+**Function Documentation?** → [API Reference](API_REFERENCE.md)
 
-**Usage Examples?**
-→ [Knowledge Base](KNOWLEDGE_BASE.md#usage-patterns) | [Common Scenarios](KNOWLEDGE_BASE.md#common-scenarios)
+**Usage Examples?** → [Knowledge Base](KNOWLEDGE_BASE.md#usage-patterns) |
+[Common Scenarios](KNOWLEDGE_BASE.md#common-scenarios)
 
-**Project Status?**
-→ [Documentation Report](DOCUMENTATION_REPORT.md)
+**Project Status?** → [Documentation Report](DOCUMENTATION_REPORT.md)
 
-**Contributing?**
-→ [PRD](PRD.md) | [Contribution Guidelines](../README.md#contributing)
+**Contributing?** → [PRD](PRD.md) |
+[Contribution Guidelines](../README.md#contributing)
 
 ### Popular Topics
 
@@ -202,15 +208,19 @@ Documentation is extensively cross-referenced:
 
 ### Contact Information
 
-- **GitHub Issues**: [Report problems or request features](https://github.com/ahmet-cetinkaya/acore-scripts/issues)
-- **Documentation Issues**: [Report documentation problems](https://github.com/ahmet-cetinkaya/acore-scripts/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation)
-- **Discussions**: [Join community discussions](https://github.com/ahmet-cetinkaya/acore-scripts/discussions)
+- **GitHub Issues**:
+  [Report problems or request features](https://github.com/ahmet-cetinkaya/acore-scripts/issues)
+- **Documentation Issues**:
+  [Report documentation problems](https://github.com/ahmet-cetinkaya/acore-scripts/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation)
+- **Discussions**:
+  [Join community discussions](https://github.com/ahmet-cetinkaya/acore-scripts/discussions)
 
 ---
 
 ## 🎉 Summary
 
-This documentation suite provides comprehensive coverage of the acore-scripts project:
+This documentation suite provides comprehensive coverage of the acore-scripts
+project:
 
 - **📚 Complete Reference** - Every function documented with examples
 - **🎯 Practical Guidance** - Real-world usage patterns and scenarios
@@ -224,8 +234,10 @@ The documentation is designed to help you:
 - **Build Effectively** - Create robust, maintainable scripts
 - **Contribute Back** - Help improve the project for everyone
 
-**Start exploring** with the [Main README](../README.md) or dive into specific topics using the navigation above.
+**Start exploring** with the [Main README](../README.md) or dive into specific
+topics using the navigation above.
 
 ---
 
-_This docution hub is maintained by the acore-scripts community. Last updated: 2025-12-13_
+_This docution hub is maintained by the acore-scripts community. Last updated:
+2025-12-13_
