@@ -1,6 +1,12 @@
+<!-- markdownlint-disable MD041 -->\
+
 ![acore-scripts icon](https://github.com/user-attachments/assets/953a8fd7-6a2e-4aa7-ab19-71c80aa43fa4)
 
-# `acore-scripts` ![GitHub stars](https://img.shields.io/github/stars/ahmet-cetinkaya/acore-scripts?style=social) ![GitHub forks](https://img.shields.io/github/forks/ahmet-cetinkaya/acore-scripts?style=social) [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?&logo=buy-me-a-coffee&logoColor=black)](https://ahmetcetinkaya.me/donate)
+# `acore-scripts`
+
+![GitHub stars](https://img.shields.io/github/stars/ahmet-cetinkaya/acore-scripts?style=social)
+![GitHub forks](https://img.shields.io/github/forks/ahmet-cetinkaya/acore-scripts?style=social)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?&logo=buy-me-a-coffee&logoColor=black)](https://ahmetcetinkaya.me/donate)
 
 A collection of reusable bash scripts to eliminate code duplication across
 projects. These scripts provide common utilities for logging, changelog

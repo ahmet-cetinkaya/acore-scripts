@@ -43,7 +43,7 @@ Tests the `generate_changelog.sh` script functionality:
 
 ## Test Structure
 
-```
+```text
 tests/
 ├── README.md                    # This file
 ├── run-tests.sh                 # Universal test runner
@@ -78,7 +78,7 @@ tests/
 
 ## Test Output Example
 
-```
+```text
 ==================================================================
 acore-scripts Test Suite
 ==================================================================

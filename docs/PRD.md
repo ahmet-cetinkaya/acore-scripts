@@ -151,7 +151,7 @@ operations like logging, changelog generation, and version management.
 
 ### A. File Structure
 
-```
+```text
 acore-scripts/
 ├── src/
 │   ├── logger.sh               # Colored output functions
