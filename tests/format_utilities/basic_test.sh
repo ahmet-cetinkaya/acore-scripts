@@ -33,11 +33,11 @@ echo '{"name":"test","value":123}' > test.json
 "$SCRIPT_DIR/src/format_json.sh" > /dev/null 2>&1 || true
 
 if [ -f test.json ]; then
-  acore_log_success "✓ PASS: JSON formatter runs without errors"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: JSON formatter runs without errors"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_error "✗ FAIL: JSON formatter failed"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: JSON formatter failed"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Test 2: YAML formatter
@@ -56,11 +56,11 @@ EOF
 "$SCRIPT_DIR/src/format_yaml.sh" > /dev/null 2>&1 || true
 
 if [ -f test.yml ]; then
-  acore_log_success "✓ PASS: YAML formatter runs without errors"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: YAML formatter runs without errors"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_error "✗ FAIL: YAML formatter failed"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: YAML formatter failed"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Test 3: Markdown formatter
@@ -82,11 +82,11 @@ EOF
 "$SCRIPT_DIR/src/format_md.sh" > /dev/null 2>&1 || true
 
 if [ -f test.md ]; then
-  acore_log_success "✓ PASS: Markdown formatter runs without errors"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: Markdown formatter runs without errors"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_error "✗ FAIL: Markdown formatter failed"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: Markdown formatter failed"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Test 4: Shell script formatter
@@ -105,11 +105,11 @@ EOF
 "$SCRIPT_DIR/src/format_sh.sh" > /dev/null 2>&1 || true
 
 if [ -f test.sh ]; then
-  acore_log_success "✓ PASS: Shell script formatter runs without errors"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: Shell script formatter runs without errors"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_error "✗ FAIL: Shell script formatter failed"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: Shell script formatter failed"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Test 5: Help functionality
@@ -120,11 +120,11 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 help_output=$("$SCRIPT_DIR/src/format_json.sh" --help 2>&1 || true)
 
 if [[ "$help_output" == *"Formatting JSON Files"* ]]; then
-  acore_log_success "✓ PASS: Help functionality works"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: Help functionality works"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_error "✗ FAIL: Help functionality failed"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: Help functionality failed"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Cleanup test files
@@ -143,11 +143,11 @@ echo '{"test": "value3"}' > test3.json
 "$SCRIPT_DIR/src/format_json.sh" > /dev/null 2>&1 || true
 
 if [ -f test1.json ] && [ -f test2.json ] && [ -f test3.json ]; then
-  acore_log_success "✓ PASS: Multiple file handling works"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: Multiple file handling works"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_error "✗ FAIL: Multiple file handling failed"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: Multiple file handling failed"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Test 7: No files to format handling
@@ -162,11 +162,11 @@ cd "$TEMP_DIR"
 output=$("$SCRIPT_DIR/src/format_json.sh" 2>&1 || true)
 
 if [[ "$output" == *"No JSON files found"* ]]; then
-  acore_log_success "✓ PASS: Graceful handling when no files found"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: Graceful handling when no files found"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_error "✗ FAIL: No proper handling when no files found"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: No proper handling when no files found"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Cleanup
@@ -181,12 +181,12 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 # Check if prettier is available
 prettier_available=false
 if command -v prettier > /dev/null 2>&1; then
-  prettier_available=true
-  acore_log_success "✓ PASS: Prettier is available"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	prettier_available=true
+	acore_log_success "✓ PASS: Prettier is available"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_warning "⚠ WARNING: Prettier not found - formatters may not work"
-  TESTS_PASSED=$((TESTS_PASSED + 1)) # Count as pass since formatters handle this
+	acore_log_warning "⚠ WARNING: Prettier not found - formatters may not work"
+	TESTS_PASSED=$((TESTS_PASSED + 1)) # Count as pass since formatters handle this
 fi
 
 # Test 9: File backup and recovery
@@ -202,17 +202,17 @@ original_md5=$(md5sum test_backup.json | cut -d' ' -f1)
 
 # Check if file was modified (should be if prettier is available)
 if [ "$prettier_available" = true ]; then
-  new_md5=$(md5sum test_backup.json | cut -d' ' -f1)
-  if [ "$original_md5" != "$new_md5" ]; then
-    acore_log_success "✓ PASS: File formatting modifies content as expected"
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-  else
-    acore_log_warning "⚠ WARNING: File content unchanged (may already be formatted)"
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-  fi
+	new_md5=$(md5sum test_backup.json | cut -d' ' -f1)
+	if [ "$original_md5" != "$new_md5" ]; then
+		acore_log_success "✓ PASS: File formatting modifies content as expected"
+		TESTS_PASSED=$((TESTS_PASSED + 1))
+	else
+		acore_log_warning "⚠ WARNING: File content unchanged (may already be formatted)"
+		TESTS_PASSED=$((TESTS_PASSED + 1))
+	fi
 else
-  acore_log_success "✓ PASS: File handling works without Prettier"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: File handling works without Prettier"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 fi
 
 # Cleanup
@@ -230,11 +230,11 @@ error_output=$("$SCRIPT_DIR/src/format_json.sh" 2>&1 || true)
 
 # Formatters should handle errors gracefully
 if [ -f malformed.json ]; then
-  acore_log_success "✓ PASS: Error handling for malformed files works"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: Error handling for malformed files works"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_warning "⚠ WARNING: Malformed file was removed"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_warning "⚠ WARNING: Malformed file was removed"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 fi
 
 # Cleanup
@@ -255,11 +255,11 @@ cd subdir
 "$SCRIPT_DIR/../src/format_md.sh" > /dev/null 2>&1 || true
 
 if [ -f nested.json ] && [ -f nested.md ]; then
-  acore_log_success "✓ PASS: Subdirectory file handling works"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: Subdirectory file handling works"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_error "✗ FAIL: Subdirectory file handling failed"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: Subdirectory file handling failed"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Cleanup
@@ -278,19 +278,19 @@ platform_passed=0
 formatters=("format_json.sh" "format_yaml.sh" "format_md.sh" "format_sh.sh")
 
 for formatter in "${formatters[@]}"; do
-  platform_tests=$((platform_tests + 1))
-  output=$("$SCRIPT_DIR/$formatter" --help 2>&1 || true)
-  if [[ "$output" == *"Formatting"* ]]; then
-    platform_passed=$((platform_passed + 1))
-  fi
+	platform_tests=$((platform_tests + 1))
+	output=$("$SCRIPT_DIR/$formatter" --help 2>&1 || true)
+	if [[ "$output" == *"Formatting"* ]]; then
+		platform_passed=$((platform_passed + 1))
+	fi
 done
 
 if [ $platform_passed -eq $platform_tests ]; then
-  acore_log_success "✓ PASS: All formatters are cross-platform compatible"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: All formatters are cross-platform compatible"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_warning "⚠ WARNING: Some formatters may have platform issues"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_warning "⚠ WARNING: Some formatters may have platform issues"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 fi
 
 # Test Summary
@@ -300,9 +300,9 @@ acore_log_success "Passed: $TESTS_PASSED"
 acore_log_error "Failed: $TESTS_FAILED"
 
 if [ $TESTS_FAILED -eq 0 ]; then
-  acore_log_success "🎉 All format utility tests passed!"
-  exit 0
+	acore_log_success "🎉 All format utility tests passed!"
+	exit 0
 else
-  acore_log_error "❌ Some format utility tests failed!"
-  exit 1
+	acore_log_error "❌ Some format utility tests failed!"
+	exit 1
 fi

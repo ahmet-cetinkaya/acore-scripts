@@ -27,11 +27,11 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 help_output=$("$SCRIPT_DIR/src/generate_changelog.sh" --help 2>&1 || true)
 
 if [[ "$help_output" == *"acore-changelog - Generate changelogs from git commits"* ]]; then
-  acore_log_success "✓ PASS: Help displayed correctly"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: Help displayed correctly"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_error "✗ FAIL: Help not displayed"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: Help not displayed"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Test 2: Script execution (in current project)
@@ -45,30 +45,30 @@ cd "$SCRIPT_DIR"
 # Check if CHANGELOG.md exists
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
 if [ -f "$SCRIPT_DIR/CHANGELOG.md" ]; then
-  acore_log_success "✓ PASS: CHANGELOG.md created/updated"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: CHANGELOG.md created/updated"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 
-  # Test 3: Check changelog structure
-  acore_log_info "Test 3: Changelog structure verification"
+	# Test 3: Check changelog structure
+	acore_log_info "Test 3: Changelog structure verification"
 
-  changelog_content=$(cat "$SCRIPT_DIR/CHANGELOG.md")
+	changelog_content=$(cat "$SCRIPT_DIR/CHANGELOG.md")
 
-  # Check for required sections
-  required_sections=("# Changelog" "## [Unreleased]" "Keep a Changelog")
+	# Check for required sections
+	required_sections=("# Changelog" "## [Unreleased]" "Keep a Changelog")
 
-  for section in "${required_sections[@]}"; do
-    TESTS_TOTAL=$((TESTS_TOTAL + 1))
-    if [[ "$changelog_content" == *"$section"* ]]; then
-      acore_log_success "✓ PASS: Section '$section' found"
-      TESTS_PASSED=$((TESTS_PASSED + 1))
-    else
-      acore_log_error "✗ FAIL: Section '$section' missing"
-      TESTS_FAILED=$((TESTS_FAILED + 1))
-    fi
-  done
+	for section in "${required_sections[@]}"; do
+		TESTS_TOTAL=$((TESTS_TOTAL + 1))
+		if [[ "$changelog_content" == *"$section"* ]]; then
+			acore_log_success "✓ PASS: Section '$section' found"
+			TESTS_PASSED=$((TESTS_PASSED + 1))
+		else
+			acore_log_error "✗ FAIL: Section '$section' missing"
+			TESTS_FAILED=$((TESTS_FAILED + 1))
+		fi
+	done
 else
-  acore_log_error "✗ FAIL: CHANGELOG.md not created"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: CHANGELOG.md not created"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Test 4: Manual input functionality
@@ -103,11 +103,11 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 # Check for either 2.0.0 or fallback to 1.0.0 if no git tags exist
 # Also check that manual input content was included
 if [ -f "CHANGELOG.md" ] && ([[ $(cat CHANGELOG.md) == *"## [2.0.0]"* ]] || [[ $(cat CHANGELOG.md) == *"## [1.0.0]"* ]]) && [[ $(cat CHANGELOG.md) == *"Added feature X"* ]]; then
-  acore_log_success "✓ PASS: Manual input works"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
+	acore_log_success "✓ PASS: Manual input works"
+	TESTS_PASSED=$((TESTS_PASSED + 1))
 else
-  acore_log_error "✗ FAIL: Manual input failed"
-  TESTS_FAILED=$((TESTS_FAILED + 1))
+	acore_log_error "✗ FAIL: Manual input failed"
+	TESTS_FAILED=$((TESTS_FAILED + 1))
 fi
 
 # Cleanup
@@ -121,9 +121,9 @@ acore_log_success "Passed: $TESTS_PASSED"
 acore_log_error "Failed: $TESTS_FAILED"
 
 if [ $TESTS_FAILED -eq 0 ]; then
-  acore_log_success "🎉 All tests passed!"
-  exit 0
+	acore_log_success "🎉 All tests passed!"
+	exit 0
 else
-  acore_log_error "❌ Some tests failed!"
-  exit 1
+	acore_log_error "❌ Some tests failed!"
+	exit 1
 fi

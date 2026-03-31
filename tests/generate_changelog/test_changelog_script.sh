@@ -15,7 +15,7 @@ source "$SCRIPT_DIR/logger.sh"
 
 # Function to show help
 _show_help() {
-  cat << 'EOF'
+	cat << 'EOF'
 acore-changelog - Generate changelogs from git commits
 
 USAGE:
@@ -41,33 +41,33 @@ VERSION_CODE=""
 CHANGELOG_TEXT=""
 
 while [ $# -gt 0 ]; do
-  case $1 in
-    --help | -h)
-      _show_help
-      exit 0
-      ;;
-    -y)
-      AUTO_ACCEPT=true
-      shift
-      ;;
-    --all-versions)
-      ALL_VERSIONS=true
-      shift
-      ;;
-    -*)
-      acore_log_error "Unknown option: $1"
-      _show_help
-      exit 1
-      ;;
-    *)
-      if [ -z "$VERSION_CODE" ]; then
-        VERSION_CODE="$1"
-      elif [ -z "$CHANGELOG_TEXT" ]; then
-        CHANGELOG_TEXT="$1"
-      fi
-      shift
-      ;;
-  esac
+	case $1 in
+		--help | -h)
+			_show_help
+			exit 0
+			;;
+		-y)
+			AUTO_ACCEPT=true
+			shift
+			;;
+		--all-versions)
+			ALL_VERSIONS=true
+			shift
+			;;
+		-*)
+			acore_log_error "Unknown option: $1"
+			_show_help
+			exit 1
+			;;
+		*)
+			if [ -z "$VERSION_CODE" ]; then
+				VERSION_CODE="$1"
+			elif [ -z "$CHANGELOG_TEXT" ]; then
+				CHANGELOG_TEXT="$1"
+			fi
+			shift
+			;;
+	esac
 done
 
 # Get current version from git tags or use default
@@ -82,246 +82,246 @@ VERSION_CODE="${VERSION_CODE#v}"
 
 # Function to capitalize first letter of a string
 _capitalize_first_letter() {
-  local text="$1"
-  echo "$(echo "${text:0:1}" | tr '[:lower:]' '[:upper:]')${text:1}"
+	local text="$1"
+	echo "$(echo "${text:0:1}" | tr '[:lower:]' '[:upper:]')${text:1}"
 }
 
 # Function to generate changelog from git commits
 _generate_from_commits() {
-  local start_tag="$1"
-  local end_tag="$2"
+	local start_tag="$1"
+	local end_tag="$2"
 
-  cd "$TEST_DIR/temp"
+	cd "$TEST_DIR/temp"
 
-  # If generating for current version (no parameters), use latest tag to HEAD
-  if [ -z "$start_tag" ] && [ -z "$end_tag" ]; then
-    # Get the latest version tag
-    LATEST_TAG=$(git tag --sort=-version:refname | head -1)
+	# If generating for current version (no parameters), use latest tag to HEAD
+	if [ -z "$start_tag" ] && [ -z "$end_tag" ]; then
+		# Get the latest version tag
+		LATEST_TAG=$(git tag --sort=-version:refname | head -1)
 
-    if [ -z "$LATEST_TAG" ]; then
-      acore_log_warning "No version tags found. Using all commits from the beginning."
-      COMMIT_RANGE="HEAD"
-    else
-      COMMIT_RANGE="$LATEST_TAG..HEAD"
-      acore_log_info "Generating changelog from commits since tag: $LATEST_TAG to current changes"
-    fi
-  elif [ -z "$start_tag" ]; then
-    # No start tag but end tag provided - get all commits from beginning to end_tag
-    COMMIT_RANGE="$end_tag"
-    acore_log_info "Generating changelog from all commits up to tag: $end_tag"
-  elif [ -z "$end_tag" ]; then
-    # No end tag, use HEAD
-    COMMIT_RANGE="$start_tag..HEAD"
-    acore_log_info "Generating changelog from commits between $start_tag and HEAD"
-  else
-    COMMIT_RANGE="$start_tag..$end_tag"
-    acore_log_info "Generating changelog from commits between $start_tag and $end_tag"
-  fi
+		if [ -z "$LATEST_TAG" ]; then
+			acore_log_warning "No version tags found. Using all commits from the beginning."
+			COMMIT_RANGE="HEAD"
+		else
+			COMMIT_RANGE="$LATEST_TAG..HEAD"
+			acore_log_info "Generating changelog from commits since tag: $LATEST_TAG to current changes"
+		fi
+	elif [ -z "$start_tag" ]; then
+		# No start tag but end tag provided - get all commits from beginning to end_tag
+		COMMIT_RANGE="$end_tag"
+		acore_log_info "Generating changelog from all commits up to tag: $end_tag"
+	elif [ -z "$end_tag" ]; then
+		# No end tag, use HEAD
+		COMMIT_RANGE="$start_tag..HEAD"
+		acore_log_info "Generating changelog from commits between $start_tag and HEAD"
+	else
+		COMMIT_RANGE="$start_tag..$end_tag"
+		acore_log_info "Generating changelog from commits between $start_tag and $end_tag"
+	fi
 
-  # Get commit messages and categorize them
-  ADDED=""
-  CHANGED=""
-  DEPRECATED=""
-  REMOVED=""
-  FIXED=""
-  SECURITY=""
+	# Get commit messages and categorize them
+	ADDED=""
+	CHANGED=""
+	DEPRECATED=""
+	REMOVED=""
+	FIXED=""
+	SECURITY=""
 
-  while IFS= read -r commit; do
-    if [ -n "$commit" ]; then
-      # Extract commit message (everything after the hash and space)
-      MESSAGE=$(echo "$commit" | cut -d' ' -f2-)
+	while IFS= read -r commit; do
+		if [ -n "$commit" ]; then
+			# Extract commit message (everything after the hash and space)
+			MESSAGE=$(echo "$commit" | cut -d' ' -f2-)
 
-      # Skip version bump commits and merge commits
-      if [[ ! "$MESSAGE" =~ ^(chore:\ update\ app\ version|Merge\ ) ]]; then
-        # Categorize commit message - only user-facing changes
-        if [[ "$MESSAGE" =~ ^(feat|fix|docs|style|refactor|perf|test|chore|ci|build)(\(.+\))?:\ (.+)$ ]]; then
-          # Conventional commit format
-          TYPE=$(echo "$MESSAGE" | cut -d':' -f1 | sed 's/(.*//')
-          DESCRIPTION=$(echo "$MESSAGE" | cut -d':' -f2- | sed 's/^ *//')
-          DESCRIPTION=$(_capitalize_first_letter "$DESCRIPTION")
+			# Skip version bump commits and merge commits
+			if [[ ! "$MESSAGE" =~ ^(chore:\ update\ app\ version|Merge\ ) ]]; then
+				# Categorize commit message - only user-facing changes
+				if [[ "$MESSAGE" =~ ^(feat|fix|docs|style|refactor|perf|test|chore|ci|build)(\(.+\))?:\ (.+)$ ]]; then
+					# Conventional commit format
+					TYPE=$(echo "$MESSAGE" | cut -d':' -f1 | sed 's/(.*//')
+					DESCRIPTION=$(echo "$MESSAGE" | cut -d':' -f2- | sed 's/^ *//')
+					DESCRIPTION=$(_capitalize_first_letter "$DESCRIPTION")
 
-          # Only include user-facing commit types
-          case "$TYPE" in
-            "feat")
-              # New features for users
-              if [ -z "$ADDED" ]; then
-                ADDED="- $DESCRIPTION"
-              else
-                ADDED="$ADDED\n- $DESCRIPTION"
-              fi
-              ;;
-            "fix")
-              # Bug fixes
-              if [ -z "$FIXED" ]; then
-                FIXED="- $DESCRIPTION"
-              else
-                FIXED="$FIXED\n- $DESCRIPTION"
-              fi
-              ;;
-            "perf")
-              # Performance improvements
-              if [ -z "$CHANGED" ]; then
-                CHANGED="- $DESCRIPTION"
-              else
-                CHANGED="$CHANGED\n- $DESCRIPTION"
-              fi
-              ;;
-            "refactor")
-              # Only include refactors that affect user experience
-              if [[ "$DESCRIPTION" =~ (UI|user|interface|experience|performance) ]]; then
-                if [ -z "$CHANGED" ]; then
-                  CHANGED="- $DESCRIPTION"
-                else
-                  CHANGED="$CHANGED\n- $DESCRIPTION"
-                fi
-              fi
-              ;;
-              # Skip these types as they don't affect end users:
-              # "docs" - documentation changes
-              # "style" - code style changes
-              # "test" - test additions/changes
-              # "build" - build system changes
-              # "ci" - CI/CD changes
-              # "chore" - maintenance tasks
-          esac
-        else
-          # Non-conventional commit - only include if it seems user-facing
-          if [[ "$MESSAGE" =~ ^(add|new|create).*(feature|function|capability) ]] \
-            || [[ "$MESSAGE" =~ ^(improve|enhance|update).*(UI|user|interface|performance) ]] \
-            || [[ "$MESSAGE" =~ ^(fix|resolve|correct).*(bug|issue|problem|error) ]]; then
+					# Only include user-facing commit types
+					case "$TYPE" in
+						"feat")
+							# New features for users
+							if [ -z "$ADDED" ]; then
+								ADDED="- $DESCRIPTION"
+							else
+								ADDED="$ADDED\n- $DESCRIPTION"
+							fi
+							;;
+						"fix")
+							# Bug fixes
+							if [ -z "$FIXED" ]; then
+								FIXED="- $DESCRIPTION"
+							else
+								FIXED="$FIXED\n- $DESCRIPTION"
+							fi
+							;;
+						"perf")
+							# Performance improvements
+							if [ -z "$CHANGED" ]; then
+								CHANGED="- $DESCRIPTION"
+							else
+								CHANGED="$CHANGED\n- $DESCRIPTION"
+							fi
+							;;
+						"refactor")
+							# Only include refactors that affect user experience
+							if [[ "$DESCRIPTION" =~ (UI|user|interface|experience|performance) ]]; then
+								if [ -z "$CHANGED" ]; then
+									CHANGED="- $DESCRIPTION"
+								else
+									CHANGED="$CHANGED\n- $DESCRIPTION"
+								fi
+							fi
+							;;
+							# Skip these types as they don't affect end users:
+							# "docs" - documentation changes
+							# "style" - code style changes
+							# "test" - test additions/changes
+							# "build" - build system changes
+							# "ci" - CI/CD changes
+							# "chore" - maintenance tasks
+					esac
+				else
+					# Non-conventional commit - only include if it seems user-facing
+					if [[ "$MESSAGE" =~ ^(add|new|create).*(feature|function|capability) ]] ||
+						[[ "$MESSAGE" =~ ^(improve|enhance|update).*(UI|user|interface|performance) ]] ||
+						[[ "$MESSAGE" =~ ^(fix|resolve|correct).*(bug|issue|problem|error) ]]; then
 
-            MESSAGE=$(_capitalize_first_letter "$MESSAGE")
+						MESSAGE=$(_capitalize_first_letter "$MESSAGE")
 
-            if [[ "$MESSAGE" =~ ^(Add|New|Create) ]]; then
-              if [ -z "$ADDED" ]; then
-                ADDED="- $MESSAGE"
-              else
-                ADDED="$ADDED\n- $MESSAGE"
-              fi
-            elif [[ "$MESSAGE" =~ ^(Fix|Resolve|Correct) ]]; then
-              if [ -z "$FIXED" ]; then
-                FIXED="- $MESSAGE"
-              else
-                FIXED="$FIXED\n- $MESSAGE"
-              fi
-            else
-              if [ -z "$CHANGED" ]; then
-                CHANGED="- $MESSAGE"
-              else
-                CHANGED="$CHANGED\n- $MESSAGE"
-              fi
-            fi
-          fi
-          # Skip all other non-conventional commits (likely internal/dev changes)
-        fi
-      fi
-    fi
-  done < <(git log --oneline --no-merges "$COMMIT_RANGE")
+						if [[ "$MESSAGE" =~ ^(Add|New|Create) ]]; then
+							if [ -z "$ADDED" ]; then
+								ADDED="- $MESSAGE"
+							else
+								ADDED="$ADDED\n- $MESSAGE"
+							fi
+						elif [[ "$MESSAGE" =~ ^(Fix|Resolve|Correct) ]]; then
+							if [ -z "$FIXED" ]; then
+								FIXED="- $MESSAGE"
+							else
+								FIXED="$FIXED\n- $MESSAGE"
+							fi
+						else
+							if [ -z "$CHANGED" ]; then
+								CHANGED="- $MESSAGE"
+							else
+								CHANGED="$CHANGED\n- $MESSAGE"
+							fi
+						fi
+					fi
+					# Skip all other non-conventional commits (likely internal/dev changes)
+				fi
+			fi
+		fi
+	done < <(git log --oneline --no-merges "$COMMIT_RANGE")
 
-  # Build changelog sections
-  CHANGELOG_SECTIONS=""
+	# Build changelog sections
+	CHANGELOG_SECTIONS=""
 
-  if [ -n "$ADDED" ]; then
-    CHANGELOG_SECTIONS="### Added\n$ADDED\n"
-  fi
+	if [ -n "$ADDED" ]; then
+		CHANGELOG_SECTIONS="### Added\n$ADDED\n"
+	fi
 
-  if [ -n "$CHANGED" ]; then
-    if [ -n "$CHANGELOG_SECTIONS" ]; then
-      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Changed\n$CHANGED\n"
-    else
-      CHANGELOG_SECTIONS="### Changed\n$CHANGED\n"
-    fi
-  fi
+	if [ -n "$CHANGED" ]; then
+		if [ -n "$CHANGELOG_SECTIONS" ]; then
+			CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Changed\n$CHANGED\n"
+		else
+			CHANGELOG_SECTIONS="### Changed\n$CHANGED\n"
+		fi
+	fi
 
-  if [ -n "$DEPRECATED" ]; then
-    if [ -n "$CHANGELOG_SECTIONS" ]; then
-      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Deprecated\n$DEPRECATED\n"
-    else
-      CHANGELOG_SECTIONS="### Deprecated\n$DEPRECATED\n"
-    fi
-  fi
+	if [ -n "$DEPRECATED" ]; then
+		if [ -n "$CHANGELOG_SECTIONS" ]; then
+			CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Deprecated\n$DEPRECATED\n"
+		else
+			CHANGELOG_SECTIONS="### Deprecated\n$DEPRECATED\n"
+		fi
+	fi
 
-  if [ -n "$REMOVED" ]; then
-    if [ -n "$CHANGELOG_SECTIONS" ]; then
-      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Removed\n$REMOVED\n"
-    else
-      CHANGELOG_SECTIONS="### Removed\n$REMOVED\n"
-    fi
-  fi
+	if [ -n "$REMOVED" ]; then
+		if [ -n "$CHANGELOG_SECTIONS" ]; then
+			CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Removed\n$REMOVED\n"
+		else
+			CHANGELOG_SECTIONS="### Removed\n$REMOVED\n"
+		fi
+	fi
 
-  if [ -n "$FIXED" ]; then
-    if [ -n "$CHANGELOG_SECTIONS" ]; then
-      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Fixed\n$FIXED\n"
-    else
-      CHANGELOG_SECTIONS="### Fixed\n$FIXED\n"
-    fi
-  fi
+	if [ -n "$FIXED" ]; then
+		if [ -n "$CHANGELOG_SECTIONS" ]; then
+			CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Fixed\n$FIXED\n"
+		else
+			CHANGELOG_SECTIONS="### Fixed\n$FIXED\n"
+		fi
+	fi
 
-  if [ -n "$SECURITY" ]; then
-    if [ -n "$CHANGELOG_SECTIONS" ]; then
-      CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Security\n$SECURITY\n"
-    else
-      CHANGELOG_SECTIONS="### Security\n$SECURITY\n"
-    fi
-  fi
+	if [ -n "$SECURITY" ]; then
+		if [ -n "$CHANGELOG_SECTIONS" ]; then
+			CHANGELOG_SECTIONS="$CHANGELOG_SECTIONS\n### Security\n$SECURITY\n"
+		else
+			CHANGELOG_SECTIONS="### Security\n$SECURITY\n"
+		fi
+	fi
 
-  echo -e "$CHANGELOG_SECTIONS"
+	echo -e "$CHANGELOG_SECTIONS"
 }
 
 # Function to update footer with version links
 _update_footer() {
-  local version="$1"
-  local clean_version="${version#v}"
+	local version="$1"
+	local clean_version="${version#v}"
 
-  # Get the repo URL from git remote
-  local repo_url
-  repo_url=$(git remote get-url origin 2> /dev/null | sed 's#git@github.com:#https://github.com/#' | sed 's#\.git$##' || echo "https://github.com/USER/REPO")
+	# Get the repo URL from git remote
+	local repo_url
+	repo_url=$(git remote get-url origin 2> /dev/null | sed 's#git@github.com:#https://github.com/#' | sed 's#\.git$##' || echo "https://github.com/USER/REPO")
 
-  # Check if footer already exists
-  if grep -q "\[unreleased\]:" "$MAIN_CHANGELOG"; then
-    # Footer exists, update version links
-    # Update the unreleased link
-    sed -i "s#\[unreleased\]:.*#[unreleased]: $repo_url/compare/v$clean_version...HEAD#g" "$MAIN_CHANGELOG"
+	# Check if footer already exists
+	if grep -q "\[unreleased\]:" "$MAIN_CHANGELOG"; then
+		# Footer exists, update version links
+		# Update the unreleased link
+		sed -i "s#\[unreleased\]:.*#[unreleased]: $repo_url/compare/v$clean_version...HEAD#g" "$MAIN_CHANGELOG"
 
-    # Add new version link if not already present
-    if ! grep -q "\[$clean_version\]:" "$MAIN_CHANGELOG"; then
-      # Find the unreleased line and add version link after it
-      awk -v repo_url="$repo_url" -v version="$clean_version" '
+		# Add new version link if not already present
+		if ! grep -q "\[$clean_version\]:" "$MAIN_CHANGELOG"; then
+			# Find the unreleased line and add version link after it
+			awk -v repo_url="$repo_url" -v version="$clean_version" '
                 /\[unreleased\]:/ {
                     print
                     print "["version"]: "repo_url"/releases/tag/v"version
                 }
                 !/\[unreleased\]:/ { print }
             ' "$MAIN_CHANGELOG" > "$MAIN_CHANGELOG.tmp"
-      mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
-    else
-      # Version link exists but might have a wrong URL (e.g. from a previous failed run with empty URL)
-      # Robustly update it
-      sed -i "s#\[$clean_version\]:.*#\[$clean_version\]: $repo_url/releases/tag/v$clean_version#g" "$MAIN_CHANGELOG"
-    fi
-  else
-    # No footer, add it
-    cat >> "$MAIN_CHANGELOG" << EOF
+			mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
+		else
+			# Version link exists but might have a wrong URL (e.g. from a previous failed run with empty URL)
+			# Robustly update it
+			sed -i "s#\[$clean_version\]:.*#\[$clean_version\]: $repo_url/releases/tag/v$clean_version#g" "$MAIN_CHANGELOG"
+		fi
+	else
+		# No footer, add it
+		cat >> "$MAIN_CHANGELOG" << EOF
 
 [unreleased]: $repo_url/compare/v$clean_version...HEAD
 [$clean_version]: $repo_url/releases/tag/v$clean_version
 EOF
-  fi
+	fi
 }
 
 # Function to create or update main CHANGELOG.md
 _update_main_changelog() {
-  local version="$1"
-  local changelog_content="$2"
-  local date
-  date=$(date +%Y-%m-%d)
+	local version="$1"
+	local changelog_content="$2"
+	local date
+	date=$(date +%Y-%m-%d)
 
-  local new_entry="## [$version] - $date\n\n$changelog_content"
+	local new_entry="## [$version] - $date\n\n$changelog_content"
 
-  if [ ! -f "$MAIN_CHANGELOG" ]; then
-    # Create new CHANGELOG.md
-    acore_log_info "Creating fresh CHANGELOG.md file"
-    cat > "$MAIN_CHANGELOG" << 'EOF'
+	if [ ! -f "$MAIN_CHANGELOG" ]; then
+		# Create new CHANGELOG.md
+		acore_log_info "Creating fresh CHANGELOG.md file"
+		cat > "$MAIN_CHANGELOG" << 'EOF'
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -332,14 +332,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 EOF
-    # Add the new entry after creating the fresh file
-    echo -e "$new_entry" >> "$MAIN_CHANGELOG"
-  else
-    # Update existing CHANGELOG.md
-    # Insert new entry after "## [Unreleased]" line
-    if grep -q "## \[Unreleased\]" "$MAIN_CHANGELOG"; then
-      # Create temporary file with new entry
-      awk -v new_entry="$new_entry" '
+		# Add the new entry after creating the fresh file
+		echo -e "$new_entry" >> "$MAIN_CHANGELOG"
+	else
+		# Update existing CHANGELOG.md
+		# Insert new entry after "## [Unreleased]" line
+		if grep -q "## \[Unreleased\]" "$MAIN_CHANGELOG"; then
+			# Create temporary file with new entry
+			awk -v new_entry="$new_entry" '
                 /^## \[Unreleased\]/ {
                     print $0
                     print ""
@@ -349,10 +349,10 @@ EOF
                 }
                 { print }
             ' "$MAIN_CHANGELOG" > "$MAIN_CHANGELOG.tmp"
-      mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
-    else
-      # If no Unreleased section, add after the header
-      awk -v new_entry="$new_entry" '
+			mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
+		else
+			# If no Unreleased section, add after the header
+			awk -v new_entry="$new_entry" '
                 NR <= 5 && /^# Changelog/ {
                     # Print header lines until we find the main header
                     while ((getline line) > 0 && line !~ /^## /) {
@@ -368,72 +368,72 @@ EOF
                 }
                 { print }
             ' "$MAIN_CHANGELOG" > "$MAIN_CHANGELOG.tmp"
-      mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
-    fi
-  fi
+			mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
+		fi
+	fi
 
-  # Update footer with version links
-  _update_footer "$version"
+	# Update footer with version links
+	_update_footer "$version"
 }
 
 # Public function: Generate changelog - the main entry point
 acore_changelog_generate() {
-  local version="$1"
-  local text="$2"
-  local auto_accept="$3"
-  local all_versions="$4"
+	local version="$1"
+	local text="$2"
+	local auto_accept="$3"
+	local all_versions="$4"
 
-  cd "$TEST_DIR/temp"
+	cd "$TEST_DIR/temp"
 
-  # Export variables for use in the script
-  # Clean version code
-  local current_version_clean="${version:-$VERSION_CODE}"
-  export VERSION_CODE="${current_version_clean#v}"
-  export CHANGELOG_TEXT="$text"
-  export AUTO_ACCEPT="${auto_accept:-false}"
-  export ALL_VERSIONS="${all_versions:-false}"
+	# Export variables for use in the script
+	# Clean version code
+	local current_version_clean="${version:-$VERSION_CODE}"
+	export VERSION_CODE="${current_version_clean#v}"
+	export CHANGELOG_TEXT="$text"
+	export AUTO_ACCEPT="${auto_accept:-false}"
+	export ALL_VERSIONS="${all_versions:-false}"
 
-  acore_log_info "Generating changelog for version $VERSION_CODE..."
+	acore_log_info "Generating changelog for version $VERSION_CODE..."
 
-  if [ -z "$CHANGELOG_TEXT" ] && [ ! -t 0 ]; then
-    CHANGELOG_TEXT=$(cat)
-  fi
+	if [ -z "$CHANGELOG_TEXT" ] && [ ! -t 0 ]; then
+		CHANGELOG_TEXT=$(cat)
+	fi
 
-  if [ -z "$CHANGELOG_TEXT" ]; then
-    CHANGELOG_CONTENT=$(_generate_from_commits)
-    if [ -z "$CHANGELOG_CONTENT" ]; then
-      acore_log_warning "No user-facing changes found since last version."
-      CHANGELOG_CONTENT="### Changed\n- Internal improvements and maintenance"
-    fi
-    acore_log_header "Generated Changelog"
-    echo -e "$CHANGELOG_CONTENT"
-    if [ "$AUTO_ACCEPT" != true ]; then
-      read -r -p "Use this generated changelog? (y/N): " confirm
-      if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        acore_log_error "Operation cancelled."
-        return 1
-      fi
-    fi
-  else
-    # Manual changelog
-    CAPITALIZED_ITEMS=$(echo -e "$CHANGELOG_TEXT" | sed 's/^[•-] /- /g' | while IFS= read -r line; do
-      if [[ "$line" =~ ^-\ (.+)$ ]]; then
-        content="${BASH_REMATCH[1]}"
-        echo "- $(_capitalize_first_letter "$content")"
-      elif [ -n "$line" ]; then
-        echo "- $(_capitalize_first_letter "$line")"
-      fi
-    done)
-    CHANGELOG_CONTENT="### Changed\n$CAPITALIZED_ITEMS"
-  fi
-  _update_main_changelog "$VERSION_CODE" "$CHANGELOG_CONTENT"
-  acore_log_success "Updated $MAIN_CHANGELOG"
+	if [ -z "$CHANGELOG_TEXT" ]; then
+		CHANGELOG_CONTENT=$(_generate_from_commits)
+		if [ -z "$CHANGELOG_CONTENT" ]; then
+			acore_log_warning "No user-facing changes found since last version."
+			CHANGELOG_CONTENT="### Changed\n- Internal improvements and maintenance"
+		fi
+		acore_log_header "Generated Changelog"
+		echo -e "$CHANGELOG_CONTENT"
+		if [ "$AUTO_ACCEPT" != true ]; then
+			read -r -p "Use this generated changelog? (y/N): " confirm
+			if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+				acore_log_error "Operation cancelled."
+				return 1
+			fi
+		fi
+	else
+		# Manual changelog
+		CAPITALIZED_ITEMS=$(echo -e "$CHANGELOG_TEXT" | sed 's/^[•-] /- /g' | while IFS= read -r line; do
+			if [[ "$line" =~ ^-\ (.+)$ ]]; then
+				content="${BASH_REMATCH[1]}"
+				echo "- $(_capitalize_first_letter "$content")"
+			elif [ -n "$line" ]; then
+				echo "- $(_capitalize_first_letter "$line")"
+			fi
+		done)
+		CHANGELOG_CONTENT="### Changed\n$CAPITALIZED_ITEMS"
+	fi
+	_update_main_changelog "$VERSION_CODE" "$CHANGELOG_CONTENT"
+	acore_log_success "Updated $MAIN_CHANGELOG"
 
-  acore_log_success "Changelog processing complete!"
+	acore_log_success "Changelog processing complete!"
 }
 
 # Execute public function when script is called directly
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  # Call the public function with parsed arguments
-  acore_changelog_generate "$VERSION_CODE" "$CHANGELOG_TEXT" "$AUTO_ACCEPT" "$ALL_VERSIONS"
+	# Call the public function with parsed arguments
+	acore_changelog_generate "$VERSION_CODE" "$CHANGELOG_TEXT" "$AUTO_ACCEPT" "$ALL_VERSIONS"
 fi
