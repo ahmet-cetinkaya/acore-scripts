@@ -180,7 +180,7 @@ functions_to_check=("acore_log_info" "acore_log_success" "acore_log_warning" "ac
 functions_available=true
 
 for func in "${functions_to_check[@]}"; do
-	if ! declare -f "$func" > /dev/null 2>&1; then
+	if ! declare -f "$func" >/dev/null 2>&1; then
 		functions_available=false
 		break
 	fi

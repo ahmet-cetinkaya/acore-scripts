@@ -42,7 +42,7 @@ setup_test_env() {
 	git config user.email "test@example.com"
 
 	# Create initial commit
-	echo "# Test Project" > README.md
+	echo "# Test Project" >README.md
 	git add README.md
 	git commit -m "Initial commit" --quiet
 
@@ -138,15 +138,15 @@ test_script_execution() {
 	cd "$TEMP_DIR"
 
 	# Add some commits with conventional commit format
-	echo "Feature: User authentication" >> auth.js
+	echo "Feature: User authentication" >>auth.js
 	git add auth.js
 	git commit -m "feat: add user authentication" --quiet
 
-	echo "Bug fix: Login redirect loop" >> auth.js
+	echo "Bug fix: Login redirect loop" >>auth.js
 	git add auth.js
 	git commit -m "fix(auth): resolve login redirect loop" --quiet
 
-	echo "Performance: Database optimization" >> db.js
+	echo "Performance: Database optimization" >>db.js
 	git add db.js
 	git commit -m "perf: optimize database queries" --quiet
 
@@ -218,7 +218,7 @@ test_manual_changelog_input() {
 Fixed critical bug
 Improved performance"
 
-	echo "$manual_text" | "$CHANGELOG_SCRIPT" 1.2.3 -y 2> /dev/null || true
+	echo "$manual_text" | "$CHANGELOG_SCRIPT" 1.2.3 -y 2>/dev/null || true
 
 	local changelog_content
 	changelog_content=$(cat "$TEMP_DIR/CHANGELOG.md")

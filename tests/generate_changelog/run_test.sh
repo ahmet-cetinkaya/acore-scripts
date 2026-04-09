@@ -44,12 +44,12 @@ setup_test_env() {
 	git config user.email "test@example.com"
 
 	# Create initial commit
-	echo "# Test Project" > README.md
+	echo "# Test Project" >README.md
 	git add README.md
 	git commit -m "Initial commit" --quiet
 
 	# Clear any existing git state that might interfere
-	git checkout --orphan test-branch 2> /dev/null || true
+	git checkout --orphan test-branch 2>/dev/null || true
 	git reset --hard
 
 	echo -e "${GREEN}Test environment setup complete${NC}"
@@ -156,7 +156,7 @@ test_manual_input() {
 	local manual_text="Added custom feature
 Fixed critical bug"
 
-	echo "$manual_text" | ./generate_changelog.sh 1.2.3 -y 2> /dev/null || true
+	echo "$manual_text" | ./generate_changelog.sh 1.2.3 -y 2>/dev/null || true
 
 	local changelog_content
 	changelog_content=$(cat "$TEMP_DIR/CHANGELOG.md")

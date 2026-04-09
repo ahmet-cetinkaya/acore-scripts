@@ -35,7 +35,7 @@ capture_output() {
 	fi
 
 	if [ -n "$working_dir" ]; then
-		cd - > /dev/null
+		cd - >/dev/null
 	fi
 }
 
@@ -84,20 +84,20 @@ git config user.name "Test User"
 git config user.email "test@example.com"
 
 # Create initial commit
-echo "# Test Project" > README.md
+echo "# Test Project" >README.md
 git add README.md
 git commit -m "Initial commit" --quiet
 
 # Create some feature commits
-echo "Feature 1" >> feature.txt
+echo "Feature 1" >>feature.txt
 git add feature.txt
 git commit -m "feat: Add feature 1" --quiet
 
-echo "Feature 2" >> feature.txt
+echo "Feature 2" >>feature.txt
 git add feature.txt
 git commit -m "feat: Add feature 2" --quiet
 
-echo "Bug fix" >> bugfix.txt
+echo "Bug fix" >>bugfix.txt
 git add bugfix.txt
 git commit -m "fix: Resolve critical bug" --quiet
 
@@ -138,16 +138,16 @@ TEMP_FORMAT_DIR=$(mktemp -d)
 cd "$TEMP_FORMAT_DIR"
 
 # Create test files of different types
-echo '{"test": "json", "nested": {"key": "value"}}' > test.json
-cat > test.yml << 'EOF'
+echo '{"test": "json", "nested": {"key": "value"}}' >test.json
+cat >test.yml <<'EOF'
 name: test
 value: yaml
 nested:
   key: value
 EOF
-echo "# Markdown Test" > test.md
-echo "#!/usr/bin/env bash" > test.sh
-echo 'echo "test"' >> test.sh
+echo "# Markdown Test" >test.md
+echo "#!/usr/bin/env bash" >test.sh
+echo 'echo "test"' >>test.sh
 
 # Test running multiple format utilities
 format_output=""
@@ -301,7 +301,7 @@ TEMP_FS_DIR=$(mktemp -d)
 mkdir -p "$TEMP_FS_DIR/subdir"
 cd "$TEMP_FS_DIR"
 
-echo "test content" > test_file.txt
+echo "test content" >test_file.txt
 
 # Test scripts from different working directories
 cd subdir
@@ -345,9 +345,9 @@ git config user.name "Test User"
 git config user.email "test@example.com"
 
 # Create project files
-echo "# My Project" > README.md
-echo '{"name": "my-project", "version": "1.0.0"}' > package.json
-cat > config.yml << 'EOF'
+echo "# My Project" >README.md
+echo '{"name": "my-project", "version": "1.0.0"}' >package.json
+cat >config.yml <<'EOF'
 name: my-project
 version: 1.0.0
 database:
@@ -360,20 +360,20 @@ git commit -m "Initial project setup" --quiet
 
 # Add features
 mkdir -p src
-echo "Feature implementation" >> src/main.js
+echo "Feature implementation" >>src/main.js
 git add src/main.js
 git commit -m "feat: Add main functionality" --quiet
 
 # Fix bugs
-echo "Bug fix patch" >> src/patch.js
+echo "Bug fix patch" >>src/patch.js
 git add src/patch.js
 git commit -m "fix: Resolve critical issue" --quiet
 
 # Complete workflow: tag -> changelog -> format
-"$SCRIPT_DIR/src/manage-git-release-tag.sh" v1.0.0 > /dev/null 2>&1 || true
-"$SCRIPT_DIR/src/generate_changelog.sh" v1.0.0 -y > /dev/null 2>&1 || true
-"$SCRIPT_DIR/src/format_json.sh" > /dev/null 2>&1 || true
-"$SCRIPT_DIR/src/format_yaml.sh" > /dev/null 2>&1 || true
+"$SCRIPT_DIR/src/manage-git-release-tag.sh" v1.0.0 >/dev/null 2>&1 || true
+"$SCRIPT_DIR/src/generate_changelog.sh" v1.0.0 -y >/dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_json.sh" >/dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_yaml.sh" >/dev/null 2>&1 || true
 
 # Check project is still functional
 if [ -f README.md ] && [ -f package.json ] && [ -f config.yml ]; then
@@ -401,16 +401,16 @@ cd "$TEMP_PERF_DIR"
 
 # Create multiple files for batch processing
 for i in {1..5}; do
-	echo "{\"id\": $i, \"data\": \"test data $i\"}" > "file$i.json"
-	echo "name: test$i" > "file$i.yml"
-	echo "# Test file $i" > "file$i.md"
+	echo "{\"id\": $i, \"data\": \"test data $i\"}" >"file$i.json"
+	echo "name: test$i" >"file$i.yml"
+	echo "# Test file $i" >"file$i.md"
 done
 
 # Time the batch processing
 start_time=$(date +%s)
-"$SCRIPT_DIR/src/format_json.sh" > /dev/null 2>&1 || true
-"$SCRIPT_DIR/src/format_yaml.sh" > /dev/null 2>&1 || true
-"$SCRIPT_DIR/src/format_md.sh" > /dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_json.sh" >/dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_yaml.sh" >/dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_md.sh" >/dev/null 2>&1 || true
 end_time=$(date +%s)
 
 duration=$((end_time - start_time))

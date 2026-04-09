@@ -23,7 +23,7 @@ PASSED_TESTS=0
 
 # Function to display usage
 show_usage() {
-	cat << 'EOF'
+	cat <<'EOF'
 acore-scripts Test Runner
 
 USAGE:
@@ -143,73 +143,73 @@ show_test_results() {
 TEST_NAME="$1"
 
 case "$TEST_NAME" in
-	"help" | "-h" | "--help" | "")
-		if [ "$TEST_NAME" = "help" ] || [ "$TEST_NAME" = "-h" ] || [ "$TEST_NAME" = "--help" ]; then
-			show_usage
-			exit 0
-		fi
-		;;
-	"generate_changelog" | "changelog" | "change")
-		acore_log_header "Running Changelog Generation Tests Only"
-		if [ -f "$TESTS_DIR/generate_changelog/basic_test.sh" ]; then
-			run_test_suite "generate_changelog" "$TESTS_DIR/generate_changelog/basic_test.sh" "Changelog Generation Tests"
-			show_test_results
-		else
-			acore_log_error "Changelog test suite not found at: $TESTS_DIR/generate_changelog/basic_test.sh"
-			exit 1
-		fi
-		exit $([ ${#FAILED_TESTS[@]} -eq 0 ] && echo 0 || echo 1)
-		;;
-	"format_utilities" | "format" | "formatting")
-		acore_log_header "Running Format Utilities Tests Only"
-		if [ -f "$TESTS_DIR/format_utilities/basic_test.sh" ]; then
-			run_test_suite "format_utilities" "$TESTS_DIR/format_utilities/basic_test.sh" "Format Utilities Tests"
-			show_test_results
-		else
-			acore_log_error "Format utilities test suite not found at: $TESTS_DIR/format_utilities/basic_test.sh"
-			exit 1
-		fi
-		exit $([ ${#FAILED_TESTS[@]} -eq 0 ] && echo 0 || echo 1)
-		;;
-	"logger")
-		acore_log_header "Running Logger Utility Tests Only"
-		if [ -f "$TESTS_DIR/logger/basic_test.sh" ]; then
-			run_test_suite "logger" "$TESTS_DIR/logger/basic_test.sh" "Logger Utility Tests"
-			show_test_results
-		else
-			acore_log_error "Logger test suite not found at: $TESTS_DIR/logger/basic_test.sh"
-			exit 1
-		fi
-		exit $([ ${#FAILED_TESTS[@]} -eq 0 ] && echo 0 || echo 1)
-		;;
-	"git_management" | "git" | "tag")
-		acore_log_header "Running Git Tag Management Tests Only"
-		if [ -f "$TESTS_DIR/git_management/basic_test.sh" ]; then
-			run_test_suite "git_management" "$TESTS_DIR/git_management/basic_test.sh" "Git Tag Management Tests"
-			show_test_results
-		else
-			acore_log_error "Git management test suite not found at: $TESTS_DIR/git_management/basic_test.sh"
-			exit 1
-		fi
-		exit $([ ${#FAILED_TESTS[@]} -eq 0 ] && echo 0 || echo 1)
-		;;
-	"integration" | "integrated" | "cross")
-		acore_log_header "Running Cross-Script Integration Tests Only"
-		if [ -f "$TESTS_DIR/integration/basic_test.sh" ]; then
-			run_test_suite "integration" "$TESTS_DIR/integration/basic_test.sh" "Cross-Script Integration Tests"
-			show_test_results
-		else
-			acore_log_error "Integration test suite not found at: $TESTS_DIR/integration/basic_test.sh"
-			exit 1
-		fi
-		exit $([ ${#FAILED_TESTS[@]} -eq 0 ] && echo 0 || echo 1)
-		;;
-	*)
-		acore_log_error "Unknown test suite: $TEST_NAME"
-		acore_log_info "Available test suites: generate_changelog, format_utilities, logger, git_management, integration"
-		acore_log_info "Use '$0 help' for more information"
+"help" | "-h" | "--help" | "")
+	if [ "$TEST_NAME" = "help" ] || [ "$TEST_NAME" = "-h" ] || [ "$TEST_NAME" = "--help" ]; then
+		show_usage
+		exit 0
+	fi
+	;;
+"generate_changelog" | "changelog" | "change")
+	acore_log_header "Running Changelog Generation Tests Only"
+	if [ -f "$TESTS_DIR/generate_changelog/basic_test.sh" ]; then
+		run_test_suite "generate_changelog" "$TESTS_DIR/generate_changelog/basic_test.sh" "Changelog Generation Tests"
+		show_test_results
+	else
+		acore_log_error "Changelog test suite not found at: $TESTS_DIR/generate_changelog/basic_test.sh"
 		exit 1
-		;;
+	fi
+	exit $([ ${#FAILED_TESTS[@]} -eq 0 ] && echo 0 || echo 1)
+	;;
+"format_utilities" | "format" | "formatting")
+	acore_log_header "Running Format Utilities Tests Only"
+	if [ -f "$TESTS_DIR/format_utilities/basic_test.sh" ]; then
+		run_test_suite "format_utilities" "$TESTS_DIR/format_utilities/basic_test.sh" "Format Utilities Tests"
+		show_test_results
+	else
+		acore_log_error "Format utilities test suite not found at: $TESTS_DIR/format_utilities/basic_test.sh"
+		exit 1
+	fi
+	exit $([ ${#FAILED_TESTS[@]} -eq 0 ] && echo 0 || echo 1)
+	;;
+"logger")
+	acore_log_header "Running Logger Utility Tests Only"
+	if [ -f "$TESTS_DIR/logger/basic_test.sh" ]; then
+		run_test_suite "logger" "$TESTS_DIR/logger/basic_test.sh" "Logger Utility Tests"
+		show_test_results
+	else
+		acore_log_error "Logger test suite not found at: $TESTS_DIR/logger/basic_test.sh"
+		exit 1
+	fi
+	exit $([ ${#FAILED_TESTS[@]} -eq 0 ] && echo 0 || echo 1)
+	;;
+"git_management" | "git" | "tag")
+	acore_log_header "Running Git Tag Management Tests Only"
+	if [ -f "$TESTS_DIR/git_management/basic_test.sh" ]; then
+		run_test_suite "git_management" "$TESTS_DIR/git_management/basic_test.sh" "Git Tag Management Tests"
+		show_test_results
+	else
+		acore_log_error "Git management test suite not found at: $TESTS_DIR/git_management/basic_test.sh"
+		exit 1
+	fi
+	exit $([ ${#FAILED_TESTS[@]} -eq 0 ] && echo 0 || echo 1)
+	;;
+"integration" | "integrated" | "cross")
+	acore_log_header "Running Cross-Script Integration Tests Only"
+	if [ -f "$TESTS_DIR/integration/basic_test.sh" ]; then
+		run_test_suite "integration" "$TESTS_DIR/integration/basic_test.sh" "Cross-Script Integration Tests"
+		show_test_results
+	else
+		acore_log_error "Integration test suite not found at: $TESTS_DIR/integration/basic_test.sh"
+		exit 1
+	fi
+	exit $([ ${#FAILED_TESTS[@]} -eq 0 ] && echo 0 || echo 1)
+	;;
+*)
+	acore_log_error "Unknown test suite: $TEST_NAME"
+	acore_log_info "Available test suites: generate_changelog, format_utilities, logger, git_management, integration"
+	acore_log_info "Use '$0 help' for more information"
+	exit 1
+	;;
 esac
 
 # Run all tests if no specific test was requested

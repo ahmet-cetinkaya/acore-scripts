@@ -40,7 +40,7 @@ acore_log_info "Test 2: Script execution with real project"
 cd "$SCRIPT_DIR"
 
 # Run with auto-accept to create/update CHANGELOG.md
-"$SCRIPT_DIR/src/generate_changelog.sh" -y 2> /dev/null || true
+"$SCRIPT_DIR/src/generate_changelog.sh" -y 2>/dev/null || true
 
 # Check if CHANGELOG.md exists
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
@@ -86,7 +86,7 @@ cp "$SCRIPT_DIR/src/logger.sh" .
 git init --quiet
 git config user.name "Test User"
 git config user.email "test@example.com"
-echo "# Test" > README.md
+echo "# Test" >README.md
 git add README.md
 git commit -m "Initial commit" --quiet
 
@@ -97,7 +97,7 @@ sed -i 's|MAIN_CHANGELOG="$PROJECT_ROOT/CHANGELOG.md"|MAIN_CHANGELOG="$PWD/CHANG
 
 # Test manual input
 ./generate_changelog.sh 2.0.0 "Added feature X
-Fixed bug Y" -y 2> /dev/null || true
+Fixed bug Y" -y 2>/dev/null || true
 
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
 # Check for either 2.0.0 or fallback to 1.0.0 if no git tags exist

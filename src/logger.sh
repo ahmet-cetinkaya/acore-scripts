@@ -157,7 +157,7 @@ acore_log_to_file() {
 	local message="$*"
 
 	mkdir -p "$(dirname "$file_path")"
-	echo "$(get_timestamp) [$level] $message" >> "$file_path"
+	echo "$(get_timestamp) [$level] $message" >>"$file_path"
 }
 
 # Error handling with logging
@@ -174,7 +174,7 @@ acore_log_spinner() {
 	local delay=0.1
 	local spinstr="|/-\\"
 
-	while kill -0 "$pid" 2> /dev/null; do
+	while kill -0 "$pid" 2>/dev/null; do
 		local temp=${spinstr#?}
 		printf "\r%s" "${temp}" >&2
 		spinstr=$temp${spinstr%"$temp"}
@@ -191,13 +191,13 @@ acore_set_log_config() {
 	local use_color=${4:-$LOG_COLOR}
 
 	case $level in
-		DEBUG | INFO | WARNING | ERROR | CRITICAL)
-			export LOG_LEVEL=$level
-			;;
-		*)
-			acore_log_error "Invalid log level: $level"
-			return 1
-			;;
+	DEBUG | INFO | WARNING | ERROR | CRITICAL)
+		export LOG_LEVEL=$level
+		;;
+	*)
+		acore_log_error "Invalid log level: $level"
+		return 1
+		;;
 	esac
 
 	export LOG_PREFIX=$show_prefix

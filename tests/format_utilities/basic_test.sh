@@ -27,10 +27,10 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 cd "$SCRIPT_DIR"
 
 # Create test JSON file
-echo '{"name":"test","value":123}' > test.json
+echo '{"name":"test","value":123}' >test.json
 
 # Run JSON formatter
-"$SCRIPT_DIR/src/format_json.sh" > /dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_json.sh" >/dev/null 2>&1 || true
 
 if [ -f test.json ]; then
 	acore_log_success "✓ PASS: JSON formatter runs without errors"
@@ -45,7 +45,7 @@ acore_log_info "Test 2: YAML formatter functionality"
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 # Create test YAML file
-cat > test.yml << 'EOF'
+cat >test.yml <<'EOF'
 name: test
 value: 123
 nested:
@@ -53,7 +53,7 @@ nested:
 EOF
 
 # Run YAML formatter
-"$SCRIPT_DIR/src/format_yaml.sh" > /dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_yaml.sh" >/dev/null 2>&1 || true
 
 if [ -f test.yml ]; then
 	acore_log_success "✓ PASS: YAML formatter runs without errors"
@@ -68,7 +68,7 @@ acore_log_info "Test 3: Markdown formatter functionality"
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 # Create test Markdown file
-cat > test.md << 'EOF'
+cat >test.md <<'EOF'
 # Test Document
 
 This is a test markdown file.
@@ -79,7 +79,7 @@ Some content here.
 EOF
 
 # Run Markdown formatter
-"$SCRIPT_DIR/src/format_md.sh" > /dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_md.sh" >/dev/null 2>&1 || true
 
 if [ -f test.md ]; then
 	acore_log_success "✓ PASS: Markdown formatter runs without errors"
@@ -94,7 +94,7 @@ acore_log_info "Test 4: Shell script formatter functionality"
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 # Create test shell script
-cat > test.sh << 'EOF'
+cat >test.sh <<'EOF'
 #!/usr/bin/env bash
 # Test script
 
@@ -102,7 +102,7 @@ echo "Hello World"
 EOF
 
 # Run Shell script formatter
-"$SCRIPT_DIR/src/format_sh.sh" > /dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_sh.sh" >/dev/null 2>&1 || true
 
 if [ -f test.sh ]; then
 	acore_log_success "✓ PASS: Shell script formatter runs without errors"
@@ -135,12 +135,12 @@ acore_log_info "Test 6: Multiple file handling"
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 # Create multiple test files
-echo '{"test": "value1"}' > test1.json
-echo '{"test": "value2"}' > test2.json
-echo '{"test": "value3"}' > test3.json
+echo '{"test": "value1"}' >test1.json
+echo '{"test": "value2"}' >test2.json
+echo '{"test": "value3"}' >test3.json
 
 # Run formatter on multiple files
-"$SCRIPT_DIR/src/format_json.sh" > /dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_json.sh" >/dev/null 2>&1 || true
 
 if [ -f test1.json ] && [ -f test2.json ] && [ -f test3.json ]; then
 	acore_log_success "✓ PASS: Multiple file handling works"
@@ -180,7 +180,7 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 # Check if prettier is available
 prettier_available=false
-if command -v prettier > /dev/null 2>&1; then
+if command -v prettier >/dev/null 2>&1; then
 	prettier_available=true
 	acore_log_success "✓ PASS: Prettier is available"
 	TESTS_PASSED=$((TESTS_PASSED + 1))
@@ -194,11 +194,11 @@ acore_log_info "Test 9: File backup functionality"
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 # Create a test file with unformatted content
-echo '{"name": "test","value":123,"nested":{"key":"value"}}' > test_backup.json
+echo '{"name": "test","value":123,"nested":{"key":"value"}}' >test_backup.json
 original_md5=$(md5sum test_backup.json | cut -d' ' -f1)
 
 # Run formatter
-"$SCRIPT_DIR/src/format_json.sh" > /dev/null 2>&1 || true
+"$SCRIPT_DIR/src/format_json.sh" >/dev/null 2>&1 || true
 
 # Check if file was modified (should be if prettier is available)
 if [ "$prettier_available" = true ]; then
@@ -223,7 +223,7 @@ acore_log_info "Test 10: Error handling for malformed files"
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 # Create malformed JSON file
-echo '{"name": "test", "malformed": json}' > malformed.json
+echo '{"name": "test", "malformed": json}' >malformed.json
 
 # Test formatter behavior with malformed file
 error_output=$("$SCRIPT_DIR/src/format_json.sh" 2>&1 || true)
@@ -246,13 +246,13 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 # Create subdirectory and files
 mkdir -p subdir
-echo '{"test": "nested"}' > subdir/nested.json
-echo "# Nested markdown" > subdir/nested.md
+echo '{"test": "nested"}' >subdir/nested.json
+echo "# Nested markdown" >subdir/nested.md
 
 # Test formatting in subdirectory
 cd subdir
-"$SCRIPT_DIR/../src/format_json.sh" > /dev/null 2>&1 || true
-"$SCRIPT_DIR/../src/format_md.sh" > /dev/null 2>&1 || true
+"$SCRIPT_DIR/../src/format_json.sh" >/dev/null 2>&1 || true
+"$SCRIPT_DIR/../src/format_md.sh" >/dev/null 2>&1 || true
 
 if [ -f nested.json ] && [ -f nested.md ]; then
 	acore_log_success "✓ PASS: Subdirectory file handling works"

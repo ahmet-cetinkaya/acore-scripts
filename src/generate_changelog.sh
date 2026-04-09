@@ -6,7 +6,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT=$(git rev-parse --show-toplevel 2> /dev/null || dirname "$(dirname "$SCRIPT_DIR")")
+PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || dirname "$(dirname "$SCRIPT_DIR")")
 MAIN_CHANGELOG="$PROJECT_ROOT/CHANGELOG.md"
 
 # Source logger utilities
@@ -15,7 +15,7 @@ source "$SCRIPT_DIR/logger.sh"
 
 # Function to show help
 _show_help() {
-	cat << 'EOF'
+	cat <<'EOF'
 acore-changelog - Generate changelogs from git commits
 
 USAGE:
@@ -42,36 +42,36 @@ CHANGELOG_TEXT=""
 
 while [ $# -gt 0 ]; do
 	case $1 in
-		--help | -h)
-			_show_help
-			exit 0
-			;;
-		-y)
-			AUTO_ACCEPT=true
-			shift
-			;;
-		--all-versions)
-			ALL_VERSIONS=true
-			shift
-			;;
-		-*)
-			acore_log_error "Unknown option: $1"
-			_show_help
-			exit 1
-			;;
-		*)
-			if [ -z "$VERSION_CODE" ]; then
-				VERSION_CODE="$1"
-			elif [ -z "$CHANGELOG_TEXT" ]; then
-				CHANGELOG_TEXT="$1"
-			fi
-			shift
-			;;
+	--help | -h)
+		_show_help
+		exit 0
+		;;
+	-y)
+		AUTO_ACCEPT=true
+		shift
+		;;
+	--all-versions)
+		ALL_VERSIONS=true
+		shift
+		;;
+	-*)
+		acore_log_error "Unknown option: $1"
+		_show_help
+		exit 1
+		;;
+	*)
+		if [ -z "$VERSION_CODE" ]; then
+			VERSION_CODE="$1"
+		elif [ -z "$CHANGELOG_TEXT" ]; then
+			CHANGELOG_TEXT="$1"
+		fi
+		shift
+		;;
 	esac
 done
 
 # Get current version from git tags
-CURRENT_VERSION=$(git describe --tags --abbrev=0 2> /dev/null || echo "1.0.0")
+CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
 # Clean current version from 'v' prefix
 CURRENT_VERSION="${CURRENT_VERSION#v}"
 
@@ -141,47 +141,47 @@ _generate_from_commits() {
 
 					# Only include user-facing commit types
 					case "$TYPE" in
-						"feat")
-							# New features for users
-							if [ -z "$ADDED" ]; then
-								ADDED="- $DESCRIPTION"
-							else
-								ADDED="$ADDED\n- $DESCRIPTION"
-							fi
-							;;
-						"fix")
-							# Bug fixes
-							if [ -z "$FIXED" ]; then
-								FIXED="- $DESCRIPTION"
-							else
-								FIXED="$FIXED\n- $DESCRIPTION"
-							fi
-							;;
-						"perf")
-							# Performance improvements
+					"feat")
+						# New features for users
+						if [ -z "$ADDED" ]; then
+							ADDED="- $DESCRIPTION"
+						else
+							ADDED="$ADDED\n- $DESCRIPTION"
+						fi
+						;;
+					"fix")
+						# Bug fixes
+						if [ -z "$FIXED" ]; then
+							FIXED="- $DESCRIPTION"
+						else
+							FIXED="$FIXED\n- $DESCRIPTION"
+						fi
+						;;
+					"perf")
+						# Performance improvements
+						if [ -z "$CHANGED" ]; then
+							CHANGED="- $DESCRIPTION"
+						else
+							CHANGED="$CHANGED\n- $DESCRIPTION"
+						fi
+						;;
+					"refactor")
+						# Only include refactors that affect user experience
+						if [[ "$DESCRIPTION" =~ (UI|user|interface|experience|performance) ]]; then
 							if [ -z "$CHANGED" ]; then
 								CHANGED="- $DESCRIPTION"
 							else
 								CHANGED="$CHANGED\n- $DESCRIPTION"
 							fi
-							;;
-						"refactor")
-							# Only include refactors that affect user experience
-							if [[ "$DESCRIPTION" =~ (UI|user|interface|experience|performance) ]]; then
-								if [ -z "$CHANGED" ]; then
-									CHANGED="- $DESCRIPTION"
-								else
-									CHANGED="$CHANGED\n- $DESCRIPTION"
-								fi
-							fi
-							;;
-							# Skip these types as they don't affect end users:
-							# "docs" - documentation changes
-							# "style" - code style changes
-							# "test" - test additions/changes
-							# "build" - build system changes
-							# "ci" - CI/CD changes
-							# "chore" - maintenance tasks
+						fi
+						;;
+						# Skip these types as they don't affect end users:
+						# "docs" - documentation changes
+						# "style" - code style changes
+						# "test" - test additions/changes
+						# "build" - build system changes
+						# "ci" - CI/CD changes
+						# "chore" - maintenance tasks
 					esac
 				else
 					# Non-conventional commit - only include if it seems user-facing
@@ -284,7 +284,7 @@ _generate_all_versions() {
 	acore_log_info "Found ${#ALL_TAGS[@]} version tags: ${ALL_TAGS[*]}"
 
 	# Start with the changelog header
-	cat > "$MAIN_CHANGELOG" << EOF
+	cat >"$MAIN_CHANGELOG" <<EOF
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -322,17 +322,17 @@ EOF
 		clean_version="${current_tag#v}"
 
 		# Add to main changelog
-		echo "## [$clean_version] - $tag_date" >> "$MAIN_CHANGELOG"
-		echo "" >> "$MAIN_CHANGELOG"
+		echo "## [$clean_version] - $tag_date" >>"$MAIN_CHANGELOG"
+		echo "" >>"$MAIN_CHANGELOG"
 
 		if [ -n "$changelog_content" ]; then
-			echo -e "$changelog_content" >> "$MAIN_CHANGELOG"
+			echo -e "$changelog_content" >>"$MAIN_CHANGELOG"
 		else
-			echo "### Changed" >> "$MAIN_CHANGELOG"
-			echo "- Various behind-the-scenes improvements and optimizations for a better experience" >> "$MAIN_CHANGELOG"
+			echo "### Changed" >>"$MAIN_CHANGELOG"
+			echo "- Various behind-the-scenes improvements and optimizations for a better experience" >>"$MAIN_CHANGELOG"
 		fi
 
-		echo "" >> "$MAIN_CHANGELOG"
+		echo "" >>"$MAIN_CHANGELOG"
 	done
 
 	acore_log_success "Generated complete changelog for all ${#ALL_TAGS[@]} versions"
@@ -345,7 +345,7 @@ _update_footer() {
 
 	# Get the repo URL from git remote
 	local repo_url
-	repo_url=$(git remote get-url origin 2> /dev/null | sed 's#git@github.com:#https://github.com/#' | sed 's#\.git$##' || echo "https://github.com/USER/REPO")
+	repo_url=$(git remote get-url origin 2>/dev/null | sed 's#git@github.com:#https://github.com/#' | sed 's#\.git$##' || echo "https://github.com/USER/REPO")
 
 	# Check if footer already exists
 	if grep -q "\[unreleased\]:" "$MAIN_CHANGELOG"; then
@@ -362,12 +362,12 @@ _update_footer() {
                     print "["version"]: "repo_url"/releases/tag/v"version
                 }
                 !/\[unreleased\]:/ { print }
-            ' "$MAIN_CHANGELOG" > "$MAIN_CHANGELOG.tmp"
+            ' "$MAIN_CHANGELOG" >"$MAIN_CHANGELOG.tmp"
 			mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
 		fi
 	else
 		# No footer, add it
-		cat >> "$MAIN_CHANGELOG" << EOF
+		cat >>"$MAIN_CHANGELOG" <<EOF
 
 [unreleased]: $repo_url/compare/v$clean_version...HEAD
 [$clean_version]: $repo_url/releases/tag/v$clean_version
@@ -387,7 +387,7 @@ _update_main_changelog() {
 	if [ ! -f "$MAIN_CHANGELOG" ]; then
 		# Create new CHANGELOG.md
 		acore_log_info "Creating fresh CHANGELOG.md file"
-		cat > "$MAIN_CHANGELOG" << 'EOF'
+		cat >"$MAIN_CHANGELOG" <<'EOF'
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -399,7 +399,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 EOF
 		# Add the new entry after creating the fresh file
-		echo -e "$new_entry" >> "$MAIN_CHANGELOG"
+		echo -e "$new_entry" >>"$MAIN_CHANGELOG"
 	else
 		# Update existing CHANGELOG.md
 		# Insert new entry after "## [Unreleased]" line
@@ -414,7 +414,7 @@ EOF
                     next
                 }
                 { print }
-            ' "$MAIN_CHANGELOG" > "$MAIN_CHANGELOG.tmp"
+            ' "$MAIN_CHANGELOG" >"$MAIN_CHANGELOG.tmp"
 			mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
 		else
 			# If no Unreleased section, add after the header
@@ -433,7 +433,7 @@ EOF
                     next
                 }
                 { print }
-            ' "$MAIN_CHANGELOG" > "$MAIN_CHANGELOG.tmp"
+            ' "$MAIN_CHANGELOG" >"$MAIN_CHANGELOG.tmp"
 			mv "$MAIN_CHANGELOG.tmp" "$MAIN_CHANGELOG"
 		fi
 	fi
@@ -540,7 +540,7 @@ _get_version_from_identifier() {
 	cd "$PROJECT_ROOT"
 
 	# If the identifier matches a git tag directly, return it
-	if git rev-parse "$version_identifier" > /dev/null 2>&1; then
+	if git rev-parse "$version_identifier" >/dev/null 2>&1; then
 		echo "${version_identifier#v}"
 		return 0
 	fi

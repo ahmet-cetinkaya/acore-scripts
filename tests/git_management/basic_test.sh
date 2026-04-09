@@ -102,7 +102,7 @@ acore_log_info "Test 3: Working directory checks"
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 # Create a file in working directory
-echo "test content" > test_file.txt
+echo "test content" >test_file.txt
 git add test_file.txt
 
 # Test tag creation with unclean working directory (use timeout to prevent hanging)
@@ -211,7 +211,7 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 # Create a temporary file to test URL extraction
 url_test_file="$TEMP_DIR/test_url_extraction.sh"
 
-cat > "$url_test_file.sh" << 'EOF'
+cat >"$url_test_file.sh" <<'EOF'
 #!/usr/bin/env bash
 # Simulate the URL detection part of the script
 repo_url=$(git remote get-url origin 2>/dev/null | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//' || echo "https://github.com/USER/REPO")

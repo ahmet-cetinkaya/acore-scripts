@@ -17,7 +17,7 @@ DEFAULT_PUSH=true
 
 # Function to show help
 _show_help() {
-	cat << 'EOF'
+	cat <<'EOF'
 acore-release-tag - Safe git tag management
 
 USAGE:
@@ -52,7 +52,7 @@ _validate_tag_format() {
 # Function to get repository URL
 _get_repo_url() {
 	local repo_url
-	repo_url=$(git remote get-url origin 2> /dev/null || echo "")
+	repo_url=$(git remote get-url origin 2>/dev/null || echo "")
 
 	if [ -z "$repo_url" ]; then
 		acore_log_warning "No remote 'origin' found"
@@ -66,7 +66,7 @@ _get_repo_url() {
 # Function to check if tag exists locally
 _tag_exists_local() {
 	local tag="$1"
-	git rev-parse "$tag" > /dev/null 2>&1
+	git rev-parse "$tag" >/dev/null 2>&1
 }
 
 # Function to check if tag exists remotely
@@ -79,13 +79,13 @@ _tag_exists_remote() {
 	fi
 
 	# Try to check if tag exists on remote
-	git ls-remote --tags origin 2> /dev/null | grep -q "refs/tags/$tag$"
+	git ls-remote --tags origin 2>/dev/null | grep -q "refs/tags/$tag$"
 }
 
 # Function to get commit hash for a tag
 _get_tag_commit() {
 	local tag="$1"
-	git rev-list -n 1 "$tag" 2> /dev/null
+	git rev-list -n 1 "$tag" 2>/dev/null
 }
 
 # Function to get current HEAD commit
@@ -242,13 +242,13 @@ _confirm_action() {
 	read -r -p "Are you sure you want to $action tag '$tag'? (y/N): " response
 
 	case "$response" in
-		[yY] | [yY][eE][sS])
-			return 0
-			;;
-		*)
-			acore_log_error "Operation cancelled by user"
-			return 1
-			;;
+	[yY] | [yY][eE][sS])
+		return 0
+		;;
+	*)
+		acore_log_error "Operation cancelled by user"
+		return 1
+		;;
 	esac
 }
 
@@ -262,36 +262,36 @@ acore_release_tag_manage() {
 	# Parse arguments
 	while [[ $# -gt 0 ]]; do
 		case $1 in
-			-h | --help)
-				_show_help
-				exit 0
-				;;
-			-d | --delete)
-				delete_tag=true
-				shift
-				;;
-			-f | --force)
-				force_tag=true
-				shift
-				;;
-			--no-push)
-				push_tag=false
-				shift
-				;;
-			-*)
-				acore_log_error "Unknown option: $1"
-				_show_help
+		-h | --help)
+			_show_help
+			exit 0
+			;;
+		-d | --delete)
+			delete_tag=true
+			shift
+			;;
+		-f | --force)
+			force_tag=true
+			shift
+			;;
+		--no-push)
+			push_tag=false
+			shift
+			;;
+		-*)
+			acore_log_error "Unknown option: $1"
+			_show_help
+			exit 1
+			;;
+		*)
+			if [ -z "$tag_name" ]; then
+				tag_name="$1"
+			else
+				acore_log_error "Multiple tag names provided: '$tag_name' and '$1'"
 				exit 1
-				;;
-			*)
-				if [ -z "$tag_name" ]; then
-					tag_name="$1"
-				else
-					acore_log_error "Multiple tag names provided: '$tag_name' and '$1'"
-					exit 1
-				fi
-				shift
-				;;
+			fi
+			shift
+			;;
 		esac
 	done
 
@@ -309,7 +309,7 @@ acore_release_tag_manage() {
 	cd "$PROJECT_ROOT"
 
 	# Check if we're in a git repository
-	if ! git rev-parse --git-dir > /dev/null 2>&1; then
+	if ! git rev-parse --git-dir >/dev/null 2>&1; then
 		acore_log_error "Not in a git repository"
 		exit 1
 	fi
@@ -323,13 +323,13 @@ acore_release_tag_manage() {
 
 			read -r -p "Continue anyway? (y/N): " response
 			case "$response" in
-				[yY] | [yY][eE][sS])
-					acore_log_info "Proceeding despite unclean working directory"
-					;;
-				*)
-					acore_log_error "Operation cancelled by user"
-					exit 1
-					;;
+			[yY] | [yY][eE][sS])
+				acore_log_info "Proceeding despite unclean working directory"
+				;;
+			*)
+				acore_log_error "Operation cancelled by user"
+				exit 1
+				;;
 			esac
 		fi
 	fi
