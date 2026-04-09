@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD041 -->\
+<!-- markdownlint-disable MD041 -->
 
 ![acore-scripts icon](https://github.com/user-attachments/assets/953a8fd7-6a2e-4aa7-ab19-71c80aa43fa4)
 
