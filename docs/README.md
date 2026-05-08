@@ -149,12 +149,10 @@ Documentation is extensively cross-referenced:
 ### How to Contribute
 
 1. **Report Issues** - Found something incorrect or unclear?
-
    - Open an issue on [GitHub](https://github.com/ahmet-cetinkaya/acore-scripts)
    - Describe the problem and suggest improvement
 
 2. **Submit Improvements**
-
    - Fork the repository
    - Make your changes
    - Submit a pull request
