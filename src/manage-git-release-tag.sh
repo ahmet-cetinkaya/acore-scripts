@@ -115,7 +115,8 @@ _create_tag() {
 	repo_url=$(_get_repo_url)
 	if _tag_exists_remote "$tag" "$repo_url"; then
 		if [ "$force" = true ]; then
-			acore_log_warning "Tag '$tag' exists on remote. Will be replaced with --force."
+			acore_log_warning "Tag '$tag' exists on remote. Deleting with --force."
+			git push origin ":refs/tags/$tag"
 		else
 			acore_log_error "Tag '$tag' already exists on remote repository."
 			acore_log_error "Remote URL: $repo_url"
