@@ -149,18 +149,18 @@ Documentation is extensively cross-referenced:
 ### How to Contribute
 
 1. **Report Issues** - Found something incorrect or unclear?
-   - Open an issue on [GitHub](https://github.com/ahmet-cetinkaya/acore-scripts)
-   - Describe the problem and suggest improvement
+    - Open an issue on [GitHub](https://github.com/ahmet-cetinkaya/acore-scripts)
+    - Describe the problem and suggest improvement
 
 2. **Submit Improvements**
-   - Fork the repository
-   - Make your changes
-   - Submit a pull request
+    - Fork the repository
+    - Make your changes
+    - Submit a pull request
 
 3. **Add Examples**
-   - Have a great usage example?
-   - Add it to the [Knowledge Base](KNOWLEDGE_BASE.md)
-   - Follow existing documentation patterns
+    - Have a great usage example?
+    - Add it to the [Knowledge Base](KNOWLEDGE_BASE.md)
+    - Follow existing documentation patterns
 
 ### Documentation Standards
 

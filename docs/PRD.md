@@ -166,9 +166,9 @@ acore-scripts/
 
 - Bash shell (3.2+)
 - Core Unix utilities:
-  - git (for version control operations)
-  - grep, sed, awk (for text processing)
-  - Standard shell tools
+    - git (for version control operations)
+    - grep, sed, awk (for text processing)
+    - Standard shell tools
 
 ---
 
