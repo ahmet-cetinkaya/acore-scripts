@@ -3,14 +3,14 @@
 ## Table of Contents
 
 - [Logger Utilities (`logger.sh`)](#logger-utilities-loggersh)
-    - [Configuration](#configuration)
-    - [Logging Functions](#logging-functions)
-    - [Utility Functions](#utility-functions)
-    - [Formatting Functions](#formatting-functions)
-    - [File Logging](#file-logging)
-    - [Error Handling](#error-handling)
-    - [Progress Indicators](#progress-indicators)
-    - [Configuration Management](#configuration-management)
+  - [Configuration](#configuration)
+  - [Logging Functions](#logging-functions)
+  - [Utility Functions](#utility-functions)
+  - [Formatting Functions](#formatting-functions)
+  - [File Logging](#file-logging)
+  - [Error Handling](#error-handling)
+  - [Progress Indicators](#progress-indicators)
+  - [Configuration Management](#configuration-management)
 
 ---
 
