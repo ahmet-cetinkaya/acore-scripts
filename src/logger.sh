@@ -110,28 +110,61 @@ acore_log_header() {
 	local char="${2:-=}"
 	local width
 	width=$(acore_get_terminal_width)
-	local separator
-	separator=$(acore_repeat_char "$char" "$width")
-
+	
+	# Calculate padding (title length + 2 for spacing around title)
+	local title_length=${#title}
+	local total_content_length=$((title_length + 4))  # 2 chars + title + 2 chars
+	local padding=$((width - total_content_length))
+	local left_pad=$((padding / 2))
+	local right_pad=$((padding - left_pad))
+	
 	if [[ "$LOG_COLOR" == "true" ]]; then
-		printf "\n%b%s%b\n" "${COLOR_CYAN}" "${separator}" "${COLOR_NC}" >&2
-		printf "%b%s%s%b %b%s%b\n" "${COLOR_CYAN}" "${char}" "${char}" "${COLOR_NC}" "${COLOR_WHITE}" "${title}" "${COLOR_NC}" >&2
-		printf "%b%s%b\n\n" "${COLOR_CYAN}" "${separator}" "${COLOR_NC}" >&2
+		printf "%b" "${COLOR_CYAN}" >&2
+		printf "%${left_pad}s" | tr ' ' "$char" >&2
+		printf "%b" "${COLOR_NC}" >&2
+		printf "%b" "${COLOR_CYAN}${char}${char}" >&2
+		printf "%b" "${COLOR_WHITE} ${title} " >&2
+		printf "%b" "${COLOR_CYAN}${char}${char}" >&2
+		printf "%b" "${COLOR_NC}" >&2
+		printf "%b" "${COLOR_CYAN}" >&2
+		printf "%${right_pad}s" | tr ' ' "$char" >&2
+		printf "%b\n" "${COLOR_NC}" >&2
 	else
-		printf "\n%s\n" "${separator}" >&2
-		printf "%s%s %s\n" "${char}" "${char}" "${title}" >&2
-		printf "%s\n\n" "${separator}" >&2
+		printf "%${left_pad}s" | tr ' ' "$char" >&2
+		printf "%s" "${char}${char} ${title} ${char}${char}" >&2
+		printf "%${right_pad}s" | tr ' ' "$char" >&2
+		printf "\n" >&2
 	fi
 }
 
 acore_log_section() {
+	local title="$1"
 	local char="${2:--}"
-	local separator
-	separator=$(acore_repeat_char "$char" 3)
+	local width
+	width=$(acore_get_terminal_width)
+	
+	# Calculate padding (title + 2 separators + spaces)
+	local title_length=${#title}
+	local total_content_length=$((title_length + 6))  # 3 chars + title + 3 chars
+	local padding=$((width - total_content_length))
+	local left_pad=$((padding / 2))
+	local right_pad=$((padding - left_pad))
+	
 	if [[ "$LOG_COLOR" == "true" ]]; then
-		printf "\n%b%s %s %s%b\n\n" "${COLOR_PURPLE}" "${separator}" "$1" "${separator}" "${COLOR_NC}" >&2
+		printf "%b" "${COLOR_PURPLE}" >&2
+		printf "%${left_pad}s" | tr ' ' "$char" >&2
+		printf "%b" "${COLOR_NC}" >&2
+		printf "%b" "${COLOR_PURPLE}" >&2
+		printf "%s" "--- ${title} ---" >&2
+		printf "%b" "${COLOR_NC}" >&2
+		printf "%b" "${COLOR_PURPLE}" >&2
+		printf "%${right_pad}s" | tr ' ' "$char" >&2
+		printf "%b\n" "${COLOR_NC}" >&2
 	else
-		printf "\n%s %s %s\n\n" "${separator}" "$1" "${separator}" >&2
+		printf "%${left_pad}s" | tr ' ' "$char" >&2
+		printf "%s" "--- ${title} ---" >&2
+		printf "%${right_pad}s" | tr ' ' "$char" >&2
+		printf "\n" >&2
 	fi
 }
 
@@ -140,7 +173,7 @@ acore_log_divider() {
 	width=$(acore_get_terminal_width)
 	local separator
 	separator=$(acore_repeat_char "-" "$width")
-	printf "\n%s\n" "${separator}"
+	printf "%s\n" "${separator}"
 }
 
 # Special formatting functions
