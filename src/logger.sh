@@ -21,6 +21,18 @@ LOG_TIMESTAMP="${LOG_TIMESTAMP:-false}"
 LOG_COLOR="${LOG_COLOR:-true}"
 LOG_WIDTH="${LOG_WIDTH:-66}"
 
+# Get terminal width dynamically
+acore_get_terminal_width() {
+	local width
+	# Try tput cols (most portable across Unix systems)
+	if width=$(tput cols 2>/dev/null) && [[ -n "$width" && "$width" -gt 0 ]]; then
+		echo "$width"
+		return
+	fi
+	# Fallback to configured LOG_WIDTH
+	echo "$LOG_WIDTH"
+}
+
 # Utility function to repeat a character
 acore_repeat_char() {
 	local char=$1
@@ -96,8 +108,10 @@ acore_log_critical() {
 acore_log_header() {
 	local title="$1"
 	local char="${2:-=}"
+	local width
+	width=$(acore_get_terminal_width)
 	local separator
-	separator=$(acore_repeat_char "$char" "$LOG_WIDTH")
+	separator=$(acore_repeat_char "$char" "$width")
 
 	if [[ "$LOG_COLOR" == "true" ]]; then
 		printf "\n%b%s%b\n" "${COLOR_CYAN}" "${separator}" "${COLOR_NC}" >&2
@@ -122,8 +136,10 @@ acore_log_section() {
 }
 
 acore_log_divider() {
+	local width
+	width=$(acore_get_terminal_width)
 	local separator
-	separator=$(acore_repeat_char "-" "$LOG_WIDTH")
+	separator=$(acore_repeat_char "-" "$width")
 	printf "\n%s\n" "${separator}"
 }
 
