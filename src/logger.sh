@@ -111,28 +111,22 @@ acore_log_header() {
 	local width
 	width=$(acore_get_terminal_width)
 	
-	# Calculate padding (title length + 2 for spacing around title)
+	# Calculate padding for left-aligned text
 	local title_length=${#title}
-	local total_content_length=$((title_length + 4))  # 2 chars + title + 2 chars
-	local padding=$((width - total_content_length))
-	local left_pad=$((padding / 2))
-	local right_pad=$((padding - left_pad))
-	
+	local text_length=$((title_length + 4))  # 2 chars + title + 2 chars
+	local padding=$((width - text_length))
+
 	if [[ "$LOG_COLOR" == "true" ]]; then
-		printf "%b" "${COLOR_CYAN}" >&2
-		printf "%${left_pad}s" | tr ' ' "$char" >&2
-		printf "%b" "${COLOR_NC}" >&2
 		printf "%b" "${COLOR_CYAN}${char}${char}" >&2
 		printf "%b" "${COLOR_WHITE} ${title} " >&2
 		printf "%b" "${COLOR_CYAN}${char}${char}" >&2
 		printf "%b" "${COLOR_NC}" >&2
 		printf "%b" "${COLOR_CYAN}" >&2
-		printf "%${right_pad}s" | tr ' ' "$char" >&2
+		printf "%${padding}s" | tr ' ' "$char" >&2
 		printf "%b\n" "${COLOR_NC}" >&2
 	else
-		printf "%${left_pad}s" | tr ' ' "$char" >&2
 		printf "%s" "${char}${char} ${title} ${char}${char}" >&2
-		printf "%${right_pad}s" | tr ' ' "$char" >&2
+		printf "%${padding}s" | tr ' ' "$char" >&2
 		printf "\n" >&2
 	fi
 }
@@ -143,27 +137,21 @@ acore_log_section() {
 	local width
 	width=$(acore_get_terminal_width)
 	
-	# Calculate padding (title + 2 separators + spaces)
+	# Calculate padding for left-aligned text
 	local title_length=${#title}
-	local total_content_length=$((title_length + 6))  # 3 chars + title + 3 chars
-	local padding=$((width - total_content_length))
-	local left_pad=$((padding / 2))
-	local right_pad=$((padding - left_pad))
-	
+	local text_length=$((title_length + 4))  # 2 chars + title + 2 chars
+	local padding=$((width - text_length))
+
 	if [[ "$LOG_COLOR" == "true" ]]; then
 		printf "%b" "${COLOR_PURPLE}" >&2
-		printf "%${left_pad}s" | tr ' ' "$char" >&2
+		printf "%s" "-- ${title} --" >&2
 		printf "%b" "${COLOR_NC}" >&2
 		printf "%b" "${COLOR_PURPLE}" >&2
-		printf "%s" "--- ${title} ---" >&2
-		printf "%b" "${COLOR_NC}" >&2
-		printf "%b" "${COLOR_PURPLE}" >&2
-		printf "%${right_pad}s" | tr ' ' "$char" >&2
+		printf "%${padding}s" | tr ' ' "$char" >&2
 		printf "%b\n" "${COLOR_NC}" >&2
 	else
-		printf "%${left_pad}s" | tr ' ' "$char" >&2
-		printf "%s" "--- ${title} ---" >&2
-		printf "%${right_pad}s" | tr ' ' "$char" >&2
+		printf "%s" "-- ${title} --" >&2
+		printf "%${padding}s" | tr ' ' "$char" >&2
 		printf "\n" >&2
 	fi
 }
