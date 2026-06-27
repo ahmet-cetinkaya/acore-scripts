@@ -111,11 +111,10 @@ acore_log_header() {
 	local width
 	width=$(acore_get_terminal_width)
 
-	# Calculate padding for left-aligned text (conservative for emoji)
+	# Calculate padding for left-aligned text (with right safety margin)
 	local title_length=${#title}
-	local max_content_length=$((width - 10))  # Leave safety margin
 	local text_length=$((title_length + 4))  # 2 chars + title + 2 chars
-	local padding=$((max_content_length - text_length))
+	local padding=$((width - text_length - 2))  # 2-char right safety margin
 
 	# Ensure padding doesn't go negative
 	if [[ $padding -lt 0 ]]; then
@@ -140,11 +139,10 @@ acore_log_section() {
 	local width
 	width=$(acore_get_terminal_width)
 
-	# Calculate padding for left-aligned text (conservative for emoji)
+	# Calculate padding for left-aligned text (with right safety margin)
 	local title_length=${#title}
-	local max_content_length=$((width - 10))  # Leave safety margin
 	local text_length=$((title_length + 4))  # 2 chars + title + 2 chars
-	local padding=$((max_content_length - text_length))
+	local padding=$((width - text_length - 2))  # 2-char right safety margin
 
 	# Ensure padding doesn't go negative
 	if [[ $padding -lt 0 ]]; then
