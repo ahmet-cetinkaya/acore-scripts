@@ -110,22 +110,24 @@ acore_log_header() {
 	local char="${2:-=}"
 	local width
 	width=$(acore_get_terminal_width)
-	
-	# Calculate padding for left-aligned text
+
+	# Calculate padding for left-aligned text (reserve space for safety)
 	local title_length=${#title}
 	local text_length=$((title_length + 4))  # 2 chars + title + 2 chars
 	local padding=$((width - text_length))
 
+	# Ensure padding doesn't go negative
+	if [[ $padding -lt 0 ]]; then
+		padding=0
+	fi
+
 	if [[ "$LOG_COLOR" == "true" ]]; then
-		printf "%b" "${COLOR_CYAN}${char}${char}" >&2
-		printf "%b" "${COLOR_WHITE} ${title} " >&2
-		printf "%b" "${COLOR_CYAN}${char}${char}" >&2
-		printf "%b" "${COLOR_NC}" >&2
+		printf "%b" "${COLOR_CYAN}${char}${char} ${title} " >&2
 		printf "%b" "${COLOR_CYAN}" >&2
 		printf "%${padding}s" | tr ' ' "$char" >&2
 		printf "%b\n" "${COLOR_NC}" >&2
 	else
-		printf "%s" "${char}${char} ${title} ${char}${char}" >&2
+		printf "%s" "${char}${char} ${title} " >&2
 		printf "%${padding}s" | tr ' ' "$char" >&2
 		printf "\n" >&2
 	fi
@@ -136,21 +138,26 @@ acore_log_section() {
 	local char="${2:--}"
 	local width
 	width=$(acore_get_terminal_width)
-	
-	# Calculate padding for left-aligned text
+
+	# Calculate padding for left-aligned text (reserve space for safety)
 	local title_length=${#title}
 	local text_length=$((title_length + 4))  # 2 chars + title + 2 chars
 	local padding=$((width - text_length))
 
+	# Ensure padding doesn't go negative
+	if [[ $padding -lt 0 ]]; then
+		padding=0
+	fi
+
 	if [[ "$LOG_COLOR" == "true" ]]; then
 		printf "%b" "${COLOR_PURPLE}" >&2
-		printf "%s" "-- ${title} --" >&2
+		printf "%s" "-- ${title} " >&2
 		printf "%b" "${COLOR_NC}" >&2
 		printf "%b" "${COLOR_PURPLE}" >&2
 		printf "%${padding}s" | tr ' ' "$char" >&2
 		printf "%b\n" "${COLOR_NC}" >&2
 	else
-		printf "%s" "-- ${title} --" >&2
+		printf "%s" "-- ${title} " >&2
 		printf "%${padding}s" | tr ' ' "$char" >&2
 		printf "\n" >&2
 	fi
