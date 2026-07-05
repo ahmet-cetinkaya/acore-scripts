@@ -113,8 +113,8 @@ acore_log_header() {
 
 	# Calculate padding for left-aligned text (with right safety margin)
 	local title_length=${#title}
-	local text_length=$((title_length + 4))  # 2 chars + title + 2 chars
-	local padding=$((width - text_length - 2))  # 2-char right safety margin
+	local text_length=$((title_length + 4))    # 2 chars + title + 2 chars
+	local padding=$((width - text_length - 2)) # 2-char right safety margin
 
 	# Ensure padding doesn't go negative
 	if [[ $padding -lt 0 ]]; then
@@ -141,8 +141,8 @@ acore_log_section() {
 
 	# Calculate padding for left-aligned text (with right safety margin)
 	local title_length=${#title}
-	local text_length=$((title_length + 4))  # 2 chars + title + 2 chars
-	local padding=$((width - text_length - 2))  # 2-char right safety margin
+	local text_length=$((title_length + 4))    # 2 chars + title + 2 chars
+	local padding=$((width - text_length - 2)) # 2-char right safety margin
 
 	# Ensure padding doesn't go negative
 	if [[ $padding -lt 0 ]]; then
